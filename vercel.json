@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npx expo export --platform web --output-dir dist",
+  "buildCommand": "chmod +x scripts/build-web.sh && bash scripts/build-web.sh",
   "outputDirectory": "dist",
   "framework": null,
   "rewrites": [
