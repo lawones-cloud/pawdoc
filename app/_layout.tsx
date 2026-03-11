@@ -21,7 +21,6 @@ import {
 import { supabase } from "@/lib/supabase";
 import { posthog } from "@/lib/posthog";
 
-// Keep the splash screen visible while we load fonts and auth state
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -37,13 +36,11 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setAuthLoaded(true);
     });
 
-    // Listen for auth state changes
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -63,20 +60,25 @@ export default function RootLayout() {
     return null;
   }
 
-  return (
-    <PostHogProvider client={posthog}>
-      <SafeAreaProvider>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="index" />
-          <Stack.Screen name="landing" />
-          <Stack.Screen name="(auth)" />
-          <Stack.Screen name="(onboarding)" />
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="pet-form" />
-          <Stack.Screen name="pet-detail" />
-        </Stack>
-        <StatusBar style="dark" backgroundColor="#FAFAFA" />
-      </SafeAreaProvider>
-    </PostHogProvider>
+  const inner = (
+    <SafeAreaProvider>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="landing" />
+        <Stack.Screen name="(auth)" />
+        <Stack.Screen name="(onboarding)" />
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="pet-form" />
+        <Stack.Screen name="pet-detail" />
+        <Stack.Screen name="reminder-form" />
+      </Stack>
+      <StatusBar style="dark" backgroundColor="#FAFAFA" />
+    </SafeAreaProvider>
+  );
+
+  return posthog ? (
+    <PostHogProvider client={posthog}>{inner}</PostHogProvider>
+  ) : (
+    inner
   );
 }

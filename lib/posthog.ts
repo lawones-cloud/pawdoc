@@ -4,8 +4,7 @@ const posthogApiKey = process.env.EXPO_PUBLIC_POSTHOG_API_KEY ?? "";
 const posthogHost =
   process.env.EXPO_PUBLIC_POSTHOG_HOST ?? "https://app.posthog.com";
 
-export const posthog = new PostHog(posthogApiKey, {
-  host: posthogHost,
-  // Disable in development if no key is set
-  disabled: !posthogApiKey,
-});
+// PostHog constructor throws if key is empty — only instantiate when key is present
+export const posthog = posthogApiKey
+  ? new PostHog(posthogApiKey, { host: posthogHost })
+  : null;
