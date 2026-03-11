@@ -67,6 +67,15 @@ export default function TabsLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="nutrition"
+        options={{
+          title: "Nutrition",
+          tabBarIcon: ({ focused }) => (
+            <TabIcon emoji="🥗" focused={focused} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
