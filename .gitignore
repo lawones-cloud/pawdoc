@@ -1,6 +1,40 @@
-node_modules
-dist
+# Dependencies
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native build artifacts
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Local env files — NEVER commit secrets
 .env
 .env.local
-*.log
+.env.production
+
+# Misc
 .DS_Store
+*.pem
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# TypeScript
+tsconfig.tsbuildinfo
+
+# Vercel
+.vercel
+
+# Build output
+/tmp/
+/dist/
+/build/
+/web-build/
