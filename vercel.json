@@ -1,5 +1,5 @@
 {
-  "buildCommand": "chmod +x scripts/build-web.sh && bash scripts/build-web.sh",
+  "buildCommand": "EXPO_PLATFORM=web npx expo export --platform web",
   "outputDirectory": "dist",
   "framework": null,
   "rewrites": [
