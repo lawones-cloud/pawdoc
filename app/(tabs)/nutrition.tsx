@@ -566,6 +566,11 @@ export default function NutritionScreen() {
 
     setGenerating(true);
     try {
+      // Use the authenticated user's JWT — not the public anon key — so the
+      // edge function can verify the caller's identity and enforce ownership.
+      const { data: { session: authSession } } = await supabase.auth.getSession();
+      const accessToken = authSession?.access_token ?? SUPABASE_ANON_KEY;
+
       const resp = await fetch(
         `${SUPABASE_URL}/functions/v1/generate-nutrition-report`,
         {
@@ -573,7 +578,7 @@ export default function NutritionScreen() {
           headers: {
             "Content-Type": "application/json",
             apikey: SUPABASE_ANON_KEY,
-            Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+            Authorization: `Bearer ${accessToken}`,
           },
           body: JSON.stringify({ pet_id: activePetId }),
         }
