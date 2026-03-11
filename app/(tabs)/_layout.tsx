@@ -76,6 +76,15 @@ export default function TabsLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="emergency"
+        options={{
+          title: "Emergency",
+          tabBarIcon: ({ focused }) => (
+            <TabIcon emoji="⚠️" focused={focused} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }

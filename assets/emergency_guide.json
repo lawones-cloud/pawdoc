@@ -1,0 +1,287 @@
+[
+  {
+    "id": "poisoning",
+    "title": "Poisoning / Toxin Ingestion",
+    "icon": "☠️",
+    "severity": "emergency",
+    "signs": [
+      "Vomiting or diarrhea (may contain blood)",
+      "Excessive drooling or foaming at the mouth",
+      "Tremors, seizures, or muscle twitching",
+      "Dilated or constricted pupils",
+      "Pale, blue, or yellow gums",
+      "Sudden collapse or loss of coordination",
+      "Difficulty breathing"
+    ],
+    "immediate_steps": [
+      "Remove your pet from the source of the toxin immediately.",
+      "Do NOT induce vomiting unless specifically instructed by a veterinarian or ASPCA Poison Control.",
+      "Collect a sample of the suspected poison (label, container, or plant specimen) to bring to the vet.",
+      "Call ASPCA Animal Poison Control: (888) 426-4435 (fee may apply) or your nearest emergency vet.",
+      "Keep your pet calm and warm — limit movement to reduce absorption rate.",
+      "If toxin is on the skin or fur, rinse the area thoroughly with lukewarm water while wearing gloves.",
+      "Note the time of exposure and estimated amount ingested — this is critical information for the vet."
+    ],
+    "do_not": [
+      "Do NOT induce vomiting without professional guidance — it can cause additional harm with some toxins (e.g., caustic chemicals, petroleum products).",
+      "Do NOT give any home remedies (milk, salt, charcoal) without vet instruction.",
+      "Do NOT wait for symptoms to worsen — poisoning is time-sensitive.",
+      "Do NOT leave your pet unattended."
+    ],
+    "when_to_call_vet": "Immediately upon suspicion of any toxin ingestion. Do not wait for symptoms to appear.",
+    "affiliate_cta": {
+      "name": "Lemonade Pet Insurance",
+      "url": "https://www.lemonade.com/pet-insurance"
+    }
+  },
+  {
+    "id": "seizures",
+    "title": "Seizures / Convulsions",
+    "icon": "⚡",
+    "severity": "emergency",
+    "signs": [
+      "Sudden collapse and loss of consciousness",
+      "Uncontrolled muscle twitching or jerking",
+      "Paddling of the legs (like running while lying down)",
+      "Jaw chomping, excessive salivation, or foaming",
+      "Loss of bladder or bowel control",
+      "Disorientation, staring, or unusual behavior before the seizure (pre-ictal phase)",
+      "Confusion, temporary blindness, or restlessness after the seizure (post-ictal phase)"
+    ],
+    "immediate_steps": [
+      "Stay calm — panicking will not help your pet.",
+      "Clear the area of hard or sharp objects to prevent injury during the seizure.",
+      "Do NOT restrain your pet — gently guide them away from furniture edges only if safe.",
+      "Time the seizure with your phone — seizures lasting over 5 minutes require emergency intervention.",
+      "Dim the lights and reduce noise to minimize sensory stimulation.",
+      "After the seizure ends, keep your pet in a quiet, darkened room and speak in a calm, soft voice.",
+      "Call your vet or emergency animal hospital immediately — even a single first-time seizure warrants evaluation.",
+      "Note the duration, type of movements, and any possible triggers."
+    ],
+    "do_not": [
+      "Do NOT put your hand or any object in your pet's mouth — they cannot swallow their tongue, and you may be bitten.",
+      "Do NOT hold your pet down or restrain their limbs.",
+      "Do NOT try to give water or medication during the active seizure.",
+      "Do NOT leave your pet alone immediately after a seizure — they may be disoriented and at risk of falling."
+    ],
+    "when_to_call_vet": "Call immediately. Go to an emergency vet if the seizure lasts more than 3–5 minutes, if multiple seizures occur within 24 hours, or if it is your pet's first seizure.",
+    "affiliate_cta": {
+      "name": "Lemonade Pet Insurance",
+      "url": "https://www.lemonade.com/pet-insurance"
+    }
+  },
+  {
+    "id": "difficulty-breathing",
+    "title": "Difficulty Breathing",
+    "icon": "🫁",
+    "severity": "emergency",
+    "signs": [
+      "Labored, rapid, or shallow breathing",
+      "Open-mouth breathing in cats (always abnormal)",
+      "Blue, grey, or white gums or tongue (cyanosis)",
+      "Noisy breathing (wheezing, rattling, gurgling)",
+      "Extended neck, elbows turned outward (orthopnea posture)",
+      "Excessive panting unrelated to exercise or heat",
+      "Restlessness and inability to settle"
+    ],
+    "immediate_steps": [
+      "Keep your pet as calm and still as possible — excitement increases oxygen demand.",
+      "Do not force your pet to walk or move unless necessary.",
+      "Position your pet in a comfortable, upright posture — do not lay them on their side.",
+      "Ensure good air circulation around your pet — open a window if needed.",
+      "Transport to an emergency vet immediately — do not delay.",
+      "If there is a visible foreign object in the throat, do not attempt blind removal; get professional help.",
+      "In the car, keep the temperature cool and windows slightly open."
+    ],
+    "do_not": [
+      "Do NOT attempt CPR unless your pet becomes unresponsive and has no heartbeat.",
+      "Do NOT muzzle a pet that is having difficulty breathing.",
+      "Do NOT offer food or water.",
+      "Do NOT leave your pet alone even briefly."
+    ],
+    "when_to_call_vet": "This is a life-threatening emergency. Go to the nearest emergency veterinary clinic immediately — do not call first if your pet is in acute distress.",
+    "affiliate_cta": {
+      "name": "Lemonade Pet Insurance",
+      "url": "https://www.lemonade.com/pet-insurance"
+    }
+  },
+  {
+    "id": "unresponsive-collapse",
+    "title": "Unresponsive / Collapse",
+    "icon": "🆘",
+    "severity": "emergency",
+    "signs": [
+      "Sudden collapse with inability to rise",
+      "Unresponsiveness to touch, voice, or stimulation",
+      "Very slow, shallow, or absent breathing",
+      "Pale, white, blue, or grey gums",
+      "Rapid, weak, or absent pulse",
+      "Glazed or fixed eyes",
+      "Limp body"
+    ],
+    "immediate_steps": [
+      "Check for responsiveness — call your pet's name and gently tap a paw.",
+      "Check for breathing — watch for chest rise, feel for airflow at the nose/mouth for 10 seconds.",
+      "Check for a heartbeat — place your hand on the left chest, just behind the elbow.",
+      "If no breathing and no heartbeat, begin pet CPR only if you are trained to do so.",
+      "For CPR on dogs: 100–120 chest compressions per minute, 1–2 rescue breaths after every 30 compressions.",
+      "For CPR on cats: wrap hands around the chest and compress at 100–120 per minute.",
+      "Have someone call the emergency vet while you administer CPR.",
+      "Transport immediately to an emergency vet — continue CPR in the car if possible with a second person driving."
+    ],
+    "do_not": [
+      "Do NOT waste more than 10 seconds assessing — begin CPR quickly if indicated.",
+      "Do NOT give water or anything by mouth.",
+      "Do NOT leave your pet unattended at any point.",
+      "Do NOT administer any medications without veterinary instruction."
+    ],
+    "when_to_call_vet": "Call en route to the emergency clinic. Every second matters — prioritize transport over phone calls.",
+    "affiliate_cta": {
+      "name": "Lemonade Pet Insurance",
+      "url": "https://www.lemonade.com/pet-insurance"
+    }
+  },
+  {
+    "id": "severe-bleeding",
+    "title": "Severe Bleeding",
+    "icon": "🩸",
+    "severity": "emergency",
+    "signs": [
+      "Active, visible bleeding from a wound",
+      "Blood soaking through cloth or bandaging rapidly",
+      "Coughing or vomiting blood",
+      "Blood in urine (red or dark brown urine)",
+      "Pale gums, weakness, or rapid collapse (internal bleeding signs)",
+      "Distended or rigid abdomen (possible internal hemorrhage)"
+    ],
+    "immediate_steps": [
+      "Apply direct firm pressure to the wound using a clean cloth, gauze, or towel.",
+      "Maintain continuous pressure for at least 5–10 minutes — do not remove the cloth to check the wound.",
+      "If blood soaks through, add more material on top without removing the first layer.",
+      "Elevate the injured limb above heart level if the wound is on a leg and your pet tolerates it.",
+      "Do NOT apply a tourniquet unless the bleeding is life-threatening and uncontrollable — if you must, note the exact time it was applied.",
+      "Keep your pet as calm and still as possible — movement increases blood flow.",
+      "Transport to an emergency vet immediately while maintaining pressure.",
+      "If internal bleeding is suspected (no external wound but pale gums, collapse, distended abdomen), go to the emergency vet without delay."
+    ],
+    "do_not": [
+      "Do NOT remove an embedded foreign object (glass, nail, stick) — stabilize it in place.",
+      "Do NOT use hydrogen peroxide or alcohol on deep wounds.",
+      "Do NOT apply tight bandages that cut off circulation unless trained to do so.",
+      "Do NOT delay transport to attempt a full wound cleaning."
+    ],
+    "when_to_call_vet": "Immediately. Any uncontrolled bleeding or suspected internal hemorrhage is a veterinary emergency.",
+    "affiliate_cta": {
+      "name": "Lemonade Pet Insurance",
+      "url": "https://www.lemonade.com/pet-insurance"
+    }
+  },
+  {
+    "id": "heatstroke",
+    "title": "Heatstroke / Hyperthermia",
+    "icon": "🌡️",
+    "severity": "emergency",
+    "signs": [
+      "Excessive, heavy panting that does not improve with rest",
+      "Drooling thick, ropy saliva",
+      "Red or dark brick-red gums",
+      "High body temperature (above 39.4°C / 103°F)",
+      "Vomiting or diarrhea (may contain blood)",
+      "Confusion, disorientation, or stumbling",
+      "Muscle tremors or seizures",
+      "Loss of consciousness"
+    ],
+    "immediate_steps": [
+      "Move your pet out of the heat immediately — into shade or an air-conditioned space.",
+      "Offer small amounts of cool (not ice-cold) water to drink if they are conscious and able to swallow.",
+      "Apply cool water to the body, especially the neck, armpits, groin, and paw pads.",
+      "Use a fan to increase evaporative cooling — do not cover your pet with wet towels (traps heat).",
+      "Do NOT use ice or ice water — rapid cooling can cause dangerous vasoconstriction.",
+      "Take your pet's temperature rectally if possible — target cooling to below 39.4°C / 103°F.",
+      "Transport to an emergency vet immediately — even if your pet appears to recover, internal damage can be severe.",
+      "Continue cooling during transport with the car's air conditioning on full."
+    ],
+    "do_not": [
+      "Do NOT use ice, ice packs, or ice water — this causes shock and slows cooling.",
+      "Do NOT cover your pet with wet towels.",
+      "Do NOT force water into an unconscious pet.",
+      "Do NOT assume your pet is 'fine' if they cool down — organ damage may have occurred."
+    ],
+    "when_to_call_vet": "Immediately. Heatstroke causes irreversible organ damage within minutes. Even if your pet seems to recover, a vet assessment is mandatory.",
+    "affiliate_cta": {
+      "name": "Lemonade Pet Insurance",
+      "url": "https://www.lemonade.com/pet-insurance"
+    }
+  },
+  {
+    "id": "choking",
+    "title": "Choking / Airway Obstruction",
+    "icon": "🤚",
+    "severity": "emergency",
+    "signs": [
+      "Pawing or clawing at the mouth or throat",
+      "Gagging, retching, or repeated swallowing",
+      "High-pitched wheezing or whistling sound when breathing",
+      "Blue or purple gums or tongue (severe oxygen deprivation)",
+      "Extreme distress, panic, or sudden inability to vocalize",
+      "Collapse in severe cases"
+    ],
+    "immediate_steps": [
+      "Stay calm and approach your pet carefully — a choking, panicked animal may bite.",
+      "Open your pet's mouth carefully and look inside — only remove a visible object if you can safely grasp it with two fingers.",
+      "Do NOT do a blind finger sweep — you may push the object deeper.",
+      "For a small dog or cat: hold them face-down with your hands around their waist and give 3–5 firm thrusts between the shoulder blades.",
+      "For a large dog: place your hands below the rib cage, make a fist, and give 3–5 firm upward and forward thrusts (modified Heimlich).",
+      "Check the mouth again for the dislodged object after each set of thrusts.",
+      "If unsuccessful after 2 rounds, rush to the nearest emergency vet without delay.",
+      "If your pet loses consciousness, begin rescue breathing (1 breath every 3 seconds into the nose, with mouth held closed)."
+    ],
+    "do_not": [
+      "Do NOT attempt blind sweeps of the throat with your fingers.",
+      "Do NOT use excessive force that could injure ribs — use firm but controlled pressure.",
+      "Do NOT waste time on multiple attempts if the airway is clearly fully blocked — go to the vet.",
+      "Do NOT let the pet eat or drink even if the object is removed until cleared by a vet."
+    ],
+    "when_to_call_vet": "Immediately — call en route. Even if you successfully dislodge the object, internal injury may have occurred and a vet check is required.",
+    "affiliate_cta": {
+      "name": "Lemonade Pet Insurance",
+      "url": "https://www.lemonade.com/pet-insurance"
+    }
+  },
+  {
+    "id": "suspected-fracture",
+    "title": "Suspected Fracture / Broken Bone",
+    "icon": "🦴",
+    "severity": "emergency",
+    "signs": [
+      "Sudden non-weight-bearing lameness after trauma",
+      "Visible deformity, swelling, or abnormal limb angle",
+      "Grinding or crepitus (crackling sound) on movement",
+      "Bone visible through the skin (open/compound fracture)",
+      "Extreme pain — crying, snapping, or withdrawal when touched",
+      "Inability to move the affected limb",
+      "Dragging of hindlimbs (possible spinal involvement)"
+    ],
+    "immediate_steps": [
+      "Minimize movement — keep your pet as still as possible.",
+      "Gently muzzle your pet if there is a bite risk — even gentle pets may bite when in severe pain.",
+      "Do NOT attempt to set or straighten the bone.",
+      "For an open (compound) fracture: cover the exposed bone loosely with a clean, damp cloth — do not apply pressure.",
+      "Support the injured limb by sliding a rigid surface (board, magazine) underneath without lifting the limb.",
+      "For spinal injuries (hind limb paralysis): slide your pet onto a rigid flat surface (board or tray) and transport without bending the spine.",
+      "Keep your pet warm — shock is a real risk with severe trauma.",
+      "Transport to an emergency vet immediately using a makeshift stretcher."
+    ],
+    "do_not": [
+      "Do NOT try to set, splint, or bandage the fracture yourself without training.",
+      "Do NOT give human pain medications (ibuprofen, acetaminophen, aspirin) — these are toxic to pets.",
+      "Do NOT allow your pet to walk on the injured limb.",
+      "Do NOT delay transport — fractures worsen rapidly with movement and untreated shock."
+    ],
+    "when_to_call_vet": "Immediately. All suspected fractures and spinal injuries require emergency veterinary radiographs and treatment.",
+    "affiliate_cta": {
+      "name": "Lemonade Pet Insurance",
+      "url": "https://www.lemonade.com/pet-insurance"
+    }
+  }
+]
