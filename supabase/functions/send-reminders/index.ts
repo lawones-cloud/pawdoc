@@ -168,6 +168,22 @@ Deno.serve(async (req: Request): Promise<Response> => {
       continue;
     }
 
+    // Verify pet ownership — confirm the pet still belongs to this user in DB
+    // (guards against any data inconsistency at processing time)
+    const { data: ownedPet, error: ownershipError } = await supabase
+      .from("pets")
+      .select("id")
+      .eq("id", reminder.pet_id)
+      .eq("user_id", user.id)
+      .single();
+
+    if (ownershipError || !ownedPet) {
+      console.warn(
+        `Pet ownership check failed for reminder ${reminder.id} (pet_id=${reminder.pet_id}, user_id=${user.id}) — skipping`
+      );
+      continue;
+    }
+
     const petName = pet.name;
     const notificationBody = buildNotificationBody(petName, reminder.type);
     let channel: "push" | "email" | "none" = "none";

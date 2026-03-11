@@ -222,6 +222,28 @@ Deno.serve(async (req: Request): Promise<Response> => {
     );
   }
 
+  // ── Authenticate caller — extract JWT and resolve user ID ───────────────
+  const authHeader = req.headers.get("Authorization");
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return new Response(JSON.stringify({ error: "Missing or invalid Authorization header" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json", ...CORS_HEADERS },
+    });
+  }
+  const jwt = authHeader.replace("Bearer ", "").trim();
+
+  const supabaseAuth = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
+  const { data: { user: authUser }, error: authError } = await supabaseAuth.auth.getUser(jwt);
+
+  if (authError || !authUser) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json", ...CORS_HEADERS },
+    });
+  }
+
+  const userId = authUser.id;
+
   const db = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
 
   // ── Parse body ─────────────────────────────────────────────────────────
@@ -245,6 +267,21 @@ Deno.serve(async (req: Request): Promise<Response> => {
         headers: { "Content-Type": "application/json", ...CORS_HEADERS },
       }
     );
+  }
+
+  // ── Verify pet ownership — pet must belong to the authenticated user ────
+  const { data: ownedPet, error: ownershipError } = await db
+    .from("pets")
+    .select("id")
+    .eq("id", pet_id)
+    .eq("user_id", userId)
+    .single();
+
+  if (ownershipError || !ownedPet) {
+    return new Response(JSON.stringify({ error: "Pet not found or access denied" }), {
+      status: 403,
+      headers: { "Content-Type": "application/json", ...CORS_HEADERS },
+    });
   }
 
   // ── 1. Fetch pet profile ───────────────────────────────────────────────

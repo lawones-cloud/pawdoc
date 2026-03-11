@@ -304,6 +304,31 @@ Deno.serve(async (req: Request): Promise<Response> => {
     );
   }
 
+  // -------------------------------------------------------------------------
+  // 0. Authenticate caller — extract JWT and resolve user ID
+  // -------------------------------------------------------------------------
+  const authHeader = req.headers.get("Authorization");
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return new Response(JSON.stringify({ error: "Missing or invalid Authorization header" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+  const jwt = authHeader.replace("Bearer ", "").trim();
+
+  // Use an anon-scoped client to verify the JWT
+  const supabaseAuth = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
+  const { data: { user: authUser }, error: authError } = await supabaseAuth.auth.getUser(jwt);
+
+  if (authError || !authUser) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  const userId = authUser.id;
+
   const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
 
   let body: TriageRequest;
@@ -323,6 +348,23 @@ Deno.serve(async (req: Request): Promise<Response> => {
       JSON.stringify({ error: "pet_id, message, and session_id are required" }),
       { status: 400, headers: { "Content-Type": "application/json" } }
     );
+  }
+
+  // -------------------------------------------------------------------------
+  // 0b. Verify pet ownership — pet must belong to the authenticated user
+  // -------------------------------------------------------------------------
+  const { data: ownedPet, error: ownershipError } = await supabase
+    .from("pets")
+    .select("id")
+    .eq("id", pet_id)
+    .eq("user_id", userId)
+    .single();
+
+  if (ownershipError || !ownedPet) {
+    return new Response(JSON.stringify({ error: "Pet not found or access denied" }), {
+      status: 403,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 
   // -------------------------------------------------------------------------
