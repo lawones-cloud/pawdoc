@@ -1,0 +1,36 @@
+{
+  "dogs": {
+    "Labrador Retriever": ["Prone to hip and elbow dysplasia", "High risk of obesity; monitor caloric intake", "Susceptible to exercise-induced collapse (EIC)"],
+    "German Shepherd": ["Hip dysplasia is common; consider joint supplements", "Prone to degenerative myelopathy in older dogs", "Exocrine pancreatic insufficiency (EPI) seen in breed"],
+    "Golden Retriever": ["Higher cancer incidence than average; regular screening recommended", "Prone to hip dysplasia and hypothyroidism", "Skin conditions and hot spots are common"],
+    "French Bulldog": ["Brachycephalic airway syndrome; avoid heat and overexertion", "Prone to spinal issues (IVDD)", "Eye conditions including cherry eye and corneal ulcers"],
+    "Bulldog": ["Brachycephalic syndrome; monitor breathing closely", "Skin fold dermatitis; clean folds regularly", "Hip dysplasia and joint problems common"],
+    "Poodle": ["Prone to Addison's disease and bloat (GDV)", "Progressive retinal atrophy may develop", "Sebaceous adenitis in Standard Poodles"],
+    "Beagle": ["Prone to epilepsy and hypothyroidism", "Obesity risk; measure food portions", "Intervertebral disc disease in some lines"],
+    "Rottweiler": ["High risk of osteosarcoma (bone cancer)", "Hip and elbow dysplasia are common", "Prone to bloat (GDV); avoid exercise after meals"],
+    "Yorkshire Terrier": ["Tracheal collapse; use harness instead of collar", "Prone to hypoglycemia in puppies", "Liver shunt (portosystemic shunt) seen in breed"],
+    "Dachshund": ["Very high risk of IVDD (intervertebral disc disease)", "Avoid stairs and jumping; use ramps", "Prone to obesity which worsens spinal issues"],
+    "Boxer": ["High cancer rates, especially mast cell tumors", "Brachycephalic breed; watch for breathing difficulty", "Cardiomyopathy (ARVC) is a breed-specific concern"],
+    "Siberian Husky": ["Prone to progressive retinal atrophy", "Autoimmune conditions including zinc-responsive dermatosis", "Epilepsy has a genetic component in this breed"],
+    "Australian Shepherd": ["MDR1 gene mutation; avoid certain medications (ivermectin)", "Prone to epilepsy and hip dysplasia", "Hereditary eye conditions including CEA"],
+    "Doberman Pinscher": ["High risk of dilated cardiomyopathy (DCM)", "Von Willebrand's disease (bleeding disorder) is common", "Wobbler syndrome (cervical spondylomyelopathy)"],
+    "Shih Tzu": ["Brachycephalic; prone to eye injuries and breathing issues", "Prone to intervertebral disc disease", "Renal dysplasia seen in some lines"],
+    "Great Dane": ["High bloat (GDV) risk; feed smaller meals", "Dilated cardiomyopathy is common", "Short lifespan; joint issues due to large size"],
+    "Miniature Schnauzer": ["Prone to hyperlipidemia and pancreatitis", "Bladder stones are common; ensure adequate hydration", "Progressive retinal atrophy in some lines"],
+    "Cavalier King Charles Spaniel": ["Mitral valve disease is almost universal by age 5", "Syringomyelia (SM) related to skull shape", "Prone to hip dysplasia and eye conditions"],
+    "Border Collie": ["MDR1 gene mutation possible; test before medication", "Prone to epilepsy and hip dysplasia", "Collie eye anomaly (CEA) is breed-specific"],
+    "Pembroke Welsh Corgi": ["Prone to intervertebral disc disease (IVDD)", "Hip dysplasia despite small stature", "Degenerative myelopathy has genetic markers in breed"]
+  },
+  "cats": {
+    "Persian": ["Brachycephalic; prone to breathing difficulty and dental crowding", "Polycystic kidney disease (PKD) — genetic test available", "Prone to skin fold dermatitis and eye discharge"],
+    "Maine Coon": ["Hypertrophic cardiomyopathy (HCM) — genetic test available", "Hip dysplasia seen in breed", "Spinal muscular atrophy (SMA) in some lines"],
+    "Siamese": ["Progressive retinal atrophy is hereditary", "Higher risk of certain cancers including mediastinal lymphoma", "Prone to respiratory issues and amyloidosis"],
+    "Bengal": ["Progressive retinal atrophy (PRA-b) is breed-specific", "Prone to hypertrophic cardiomyopathy", "Flat-chested kitten syndrome in some litters"],
+    "Ragdoll": ["Hypertrophic cardiomyopathy (HCM) prevalent", "Bladder stones and urinary issues", "FIP susceptibility may be higher than average"],
+    "British Shorthair": ["Hypertrophic cardiomyopathy risk; regular cardiac screening", "Polycystic kidney disease (PKD) — test available", "Prone to obesity; monitor diet closely"],
+    "Scottish Fold": ["Osteochondrodysplasia — all folded-ear cats affected; causes joint pain", "Cardiomyopathy risk; regular echocardiograms advised", "Avoid breeding fold-to-fold; increases severity of bone disease"],
+    "Abyssinian": ["Progressive retinal atrophy (rdAc) — genetic test available", "Renal amyloidosis in some family lines", "Pyruvate kinase deficiency causing hemolytic anemia"],
+    "Sphynx": ["Hypertrophic cardiomyopathy is common; early screening important", "Prone to skin conditions; regular bathing required", "Dental disease and gum issues are prevalent"],
+    "Norwegian Forest Cat": ["Glycogen storage disease type IV in some lines", "Hypertrophic cardiomyopathy risk", "Hip dysplasia reported in breed"]
+  }
+}
