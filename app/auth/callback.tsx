@@ -34,7 +34,9 @@ export default function AuthCallback() {
             { onConflict: "id", ignoreDuplicates: true }
           );
         }
-        router.replace("/(tabs)/home");
+        // Route through index.tsx so it can check onboarding status
+        // and redirect to onboarding if the user has no pet yet.
+        router.replace("/");
       });
   }, [code]);
 
