@@ -3,7 +3,7 @@
  * Feature 3: Smart Reminder System
  *
  * Triggered by pg_cron (e.g. every 30 minutes):
- *   SELECT cron.schedule('send-reminders', '*/30 * * * *',
+ *   SELECT cron.schedule('send-reminders', 'every 30 minutes',
  *     $$SELECT net.http_post(
  *       url := 'https://<project>.supabase.co/functions/v1/send-reminders',
  *       headers := '{"Authorization":"Bearer <service_role_key>"}'::jsonb
