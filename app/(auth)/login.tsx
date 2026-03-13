@@ -12,8 +12,12 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
+import * as Linking from "expo-linking";
 import { supabase } from "@/lib/supabase";
 import { Colors } from "@/constants/theme";
+
+// Resolves to pawdoc://auth/callback on native, https://<host>/auth/callback on web.
+const authCallbackUrl = Linking.createURL("auth/callback");
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -33,6 +37,7 @@ export default function LoginScreen() {
         email: email.trim().toLowerCase(),
         options: {
           shouldCreateUser: true,
+          emailRedirectTo: authCallbackUrl,
         },
       });
 
@@ -52,7 +57,7 @@ export default function LoginScreen() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: "pawdoc://auth/callback",
+          redirectTo: authCallbackUrl,
         },
       });
 
