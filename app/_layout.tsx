@@ -71,6 +71,7 @@ export default function RootLayout() {
         <Stack.Screen name="pet-form" />
         <Stack.Screen name="pet-detail" />
         <Stack.Screen name="reminder-form" />
+        <Stack.Screen name="auth/callback" />
       </Stack>
       <StatusBar style="dark" backgroundColor="#FAFAFA" />
     </SafeAreaProvider>
