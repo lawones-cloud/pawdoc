@@ -29,7 +29,6 @@ interface PetProfile {
   breed: string | null;
   dob: string | null;
   weight: number | null;
-  weight_unit: string | null;
   allergies: string[] | null;
   conditions: string[] | null;
 }
@@ -88,9 +87,7 @@ function approximateAge(dob: string | null): string {
 
 function buildSystemPrompt(pet: PetProfile): string {
   const age = approximateAge(pet.dob);
-  const weight = pet.weight
-    ? `${pet.weight} ${pet.weight_unit ?? "kg"}`
-    : "unknown";
+  const weight = pet.weight ? `${pet.weight} kg` : "unknown";
   const conditions = pet.conditions?.length
     ? pet.conditions.join(", ")
     : "none";
@@ -287,7 +284,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
   // ── 1. Fetch pet profile ───────────────────────────────────────────────
   const { data: pet, error: petError } = await db
     .from("pets")
-    .select("id, name, species, breed, dob, weight, weight_unit, allergies, conditions")
+    .select("id, name, species, breed, dob, weight, allergies, conditions")
     .eq("id", pet_id)
     .single();
 
