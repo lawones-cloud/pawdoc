@@ -324,7 +324,7 @@ async function handleRequest(req: Request): Promise<Response> {
   if (!SUPABASE_URL || !SERVICE_ROLE_KEY || !OPENROUTER_KEY) {
     return new Response(
       JSON.stringify({ error: "Missing environment configuration" }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
+      { status: 500, headers: { "Content-Type": "application/json", ...CORS_HEADERS } }
     );
   }
 
@@ -335,7 +335,7 @@ async function handleRequest(req: Request): Promise<Response> {
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return new Response(JSON.stringify({ error: "Missing or invalid Authorization header" }), {
       status: 401,
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...CORS_HEADERS },
     });
   }
   const jwt = authHeader.replace("Bearer ", "").trim();
@@ -347,7 +347,7 @@ async function handleRequest(req: Request): Promise<Response> {
   if (authError || !authUser) {
     return new Response(JSON.stringify({ error: "Unauthorized" }), {
       status: 401,
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...CORS_HEADERS },
     });
   }
 
@@ -361,7 +361,7 @@ async function handleRequest(req: Request): Promise<Response> {
   } catch {
     return new Response(JSON.stringify({ error: "Invalid JSON body" }), {
       status: 400,
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...CORS_HEADERS },
     });
   }
 
@@ -370,7 +370,7 @@ async function handleRequest(req: Request): Promise<Response> {
   if (!pet_id || !message || !session_id) {
     return new Response(
       JSON.stringify({ error: "pet_id, message, and session_id are required" }),
-      { status: 400, headers: { "Content-Type": "application/json" } }
+      { status: 400, headers: { "Content-Type": "application/json", ...CORS_HEADERS } }
     );
   }
 
@@ -387,7 +387,7 @@ async function handleRequest(req: Request): Promise<Response> {
   if (ownershipError || !ownedPet) {
     return new Response(JSON.stringify({ error: "Pet not found or access denied" }), {
       status: 403,
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...CORS_HEADERS },
     });
   }
 
@@ -403,7 +403,7 @@ async function handleRequest(req: Request): Promise<Response> {
   if (petError || !pet) {
     return new Response(
       JSON.stringify({ error: "Pet not found", detail: petError?.message }),
-      { status: 404, headers: { "Content-Type": "application/json" } }
+      { status: 404, headers: { "Content-Type": "application/json", ...CORS_HEADERS } }
     );
   }
 
@@ -443,7 +443,7 @@ async function handleRequest(req: Request): Promise<Response> {
     const msg = err instanceof Error ? err.message : String(err);
     return new Response(
       JSON.stringify({ error: "AI call failed", detail: msg }),
-      { status: 502, headers: { "Content-Type": "application/json" } }
+      { status: 502, headers: { "Content-Type": "application/json", ...CORS_HEADERS } }
     );
   }
 
@@ -457,7 +457,7 @@ async function handleRequest(req: Request): Promise<Response> {
     const msg = err instanceof Error ? err.message : String(err);
     return new Response(
       JSON.stringify({ error: "Failed to parse AI response", detail: msg, raw: rawAI }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
+      { status: 500, headers: { "Content-Type": "application/json", ...CORS_HEADERS } }
     );
   }
 
@@ -473,10 +473,7 @@ async function handleRequest(req: Request): Promise<Response> {
         model,
       }),
       {
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
+        headers: { "Content-Type": "application/json", ...CORS_HEADERS },
       }
     );
   }
@@ -545,10 +542,7 @@ async function handleRequest(req: Request): Promise<Response> {
       response: triageResponse,
     }),
     {
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
+      headers: { "Content-Type": "application/json", ...CORS_HEADERS },
     }
   );
 }
