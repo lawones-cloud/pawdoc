@@ -39,11 +39,10 @@ export default function WelcomeScreen() {
         return;
       }
 
-      // Save display_name to users table
+      // Upsert user row — handles case where callback upsert hasn't run yet.
       await supabase
         .from("users")
-        .update({ display_name: name })
-        .eq("id", user.id);
+        .upsert({ id: user.id, email: user.email, display_name: name }, { onConflict: "id" });
 
       // Request notification permission
       const { status } = await Notifications.requestPermissionsAsync();
@@ -54,8 +53,7 @@ export default function WelcomeScreen() {
           const pushToken = tokenData.data;
           await supabase
             .from("users")
-            .update({ push_token: pushToken })
-            .eq("id", user.id);
+            .upsert({ id: user.id, email: user.email, push_token: pushToken }, { onConflict: "id" });
         } catch {
           // Token fetch failed — continue without blocking
         }

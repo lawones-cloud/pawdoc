@@ -21,12 +21,20 @@ export default function AuthCallback() {
 
     supabase.auth
       .exchangeCodeForSession(code as string)
-      .then(({ error }) => {
+      .then(async ({ data, error }) => {
         if (error) {
           setError(error.message);
-        } else {
-          router.replace("/(tabs)/home");
+          return;
         }
+        // Ensure a public.users row exists — there is no DB trigger for this.
+        // upsert is safe to call on every login; onConflict(id) is a no-op if row exists.
+        if (data.user) {
+          await supabase.from("users").upsert(
+            { id: data.user.id, email: data.user.email },
+            { onConflict: "id", ignoreDuplicates: true }
+          );
+        }
+        router.replace("/(tabs)/home");
       });
   }, [code]);
 
