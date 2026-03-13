@@ -65,7 +65,7 @@ export default function RootLayout() {
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" />
         <Stack.Screen name="landing" />
-        <Stack.Screen name="(auth)" />
+        <Stack.Screen name="(auth)/login" />
         <Stack.Screen name="(onboarding)" />
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="pet-form" />

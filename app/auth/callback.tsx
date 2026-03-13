@@ -1,26 +1,48 @@
-import { useEffect } from "react";
-import { View, ActivityIndicator } from "react-native";
-import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
+import { View, ActivityIndicator, Text } from "react-native";
+import { useRouter, useLocalSearchParams } from "expo-router";
 import { supabase } from "@/lib/supabase";
 
 /**
- * Auth callback route — handles magic-link and OAuth redirects on web.
- * On web, detectSessionInUrl:true causes Supabase to automatically exchange
- * the token in the URL. We just wait for the session and navigate away.
+ * Auth callback route — handles magic-link and OAuth redirects on web (PKCE flow).
+ * Supabase redirects here with ?code=xxx. We exchange it for a session, then navigate home.
  */
 export default function AuthCallback() {
   const router = useRouter();
+  const { code } = useLocalSearchParams<{ code: string }>();
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_IN" && session) {
-        subscription.unsubscribe();
-        router.replace("/(tabs)/home");
-      }
-    });
+    if (!code) {
+      // No code in URL — shouldn't happen, but send them to login if it does.
+      router.replace("/(auth)/login");
+      return;
+    }
 
-    return () => subscription.unsubscribe();
-  }, [router]);
+    supabase.auth
+      .exchangeCodeForSession(code as string)
+      .then(({ error }) => {
+        if (error) {
+          setError(error.message);
+        } else {
+          router.replace("/(tabs)/home");
+        }
+      });
+  }, [code]);
+
+  if (error) {
+    return (
+      <View className="flex-1 bg-background items-center justify-center px-6">
+        <Text className="text-red-500 text-center mb-4">{error}</Text>
+        <Text
+          className="text-primary text-sm"
+          onPress={() => router.replace("/(auth)/login")}
+        >
+          Back to login
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <View className="flex-1 bg-background items-center justify-center">

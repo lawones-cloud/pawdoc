@@ -16,9 +16,10 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     storage: AsyncStorage,
     autoRefreshToken: true,
     persistSession: true,
-    // On web (Vercel) the magic-link / OAuth token arrives in the URL hash/params.
-    // detectSessionInUrl must be true so Supabase can read and exchange it.
-    // On native, deep-link handling takes care of this instead.
-    detectSessionInUrl: Platform.OS === "web",
+    // PKCE flow: magic-link redirects with ?code= instead of #access_token=.
+    // The callback exchanges the code server-side — avoids gotrue-js 120s stale check.
+    // detectSessionInUrl stays false; we handle the exchange manually in app/auth/callback.tsx.
+    flowType: Platform.OS === "web" ? "pkce" : "implicit",
+    detectSessionInUrl: false,
   },
 });
