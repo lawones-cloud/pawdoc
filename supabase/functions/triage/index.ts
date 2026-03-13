@@ -237,16 +237,27 @@ async function callOpenRouter(
     temperature: 0.3,
   };
 
-  const resp = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-      "HTTP-Referer": "https://pawdoc.ai",
-      "X-Title": "PawDoc",
-    },
-    body: JSON.stringify(payload),
-  });
+  // 9-second timeout — Supabase free tier kills functions at 10s.
+  // Abort early so the function can return a proper error with CORS headers.
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 9000);
+
+  let resp: Response;
+  try {
+    resp = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+        "HTTP-Referer": "https://pawdoc.ai",
+        "X-Title": "PawDoc",
+      },
+      body: JSON.stringify(payload),
+      signal: controller.signal,
+    });
+  } finally {
+    clearTimeout(timeoutId);
+  }
 
   if (!resp.ok) {
     const errText = await resp.text();
