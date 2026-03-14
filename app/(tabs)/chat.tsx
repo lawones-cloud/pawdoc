@@ -140,6 +140,29 @@ const SUPABASE_URL = process.env.EXPO_PUBLIC_SUPABASE_URL ?? "";
 const SUPABASE_ANON_KEY = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? "";
 
 // ---------------------------------------------------------------------------
+// Emergency Gatekeeper — keyword list mirrors supabase/functions/triage
+// ---------------------------------------------------------------------------
+
+const EMERGENCY_KEYWORDS = [
+  "emergency",
+  "seizure",
+  "poison",
+  "unresponsive",
+  "bleeding",
+  "choking",
+  "cant breathe",
+  "cannot breathe",
+  "not breathing",
+  "collapsed",
+  "unconscious",
+];
+
+function isEmergencyQuery(text: string): boolean {
+  const lower = text.toLowerCase();
+  return EMERGENCY_KEYWORDS.some((kw) => lower.includes(kw));
+}
+
+// ---------------------------------------------------------------------------
 // Affiliate impression logger
 // ---------------------------------------------------------------------------
 
@@ -292,6 +315,83 @@ function EmergencyBanner() {
         <Text style={{ color: "#EF4444", fontWeight: "600", fontSize: 14 }}>
           Find Emergency Vet Near Me
         </Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// GateBlockedBanner — shown when an emergency query is blocked by the gatekeeper
+// ---------------------------------------------------------------------------
+
+interface GateBlockedBannerProps {
+  nearestVetUrl: string;
+  onDismiss: () => void;
+}
+
+function GateBlockedBanner({ nearestVetUrl, onDismiss }: GateBlockedBannerProps) {
+  const openMap = () => {
+    if (Platform.OS === "web") {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window as any).open(nearestVetUrl, "_blank");
+    } else {
+      Linking.openURL(nearestVetUrl);
+    }
+  };
+
+  return (
+    <View
+      style={{
+        backgroundColor: "#FEF2F2",
+        borderRadius: 10,
+        padding: 16,
+        marginBottom: 12,
+        borderWidth: 1,
+        borderColor: "#EF4444",
+      }}
+    >
+      <Text
+        style={{
+          color: "#EF4444",
+          fontSize: 15,
+          fontWeight: "700",
+          marginBottom: 6,
+        }}
+      >
+        Pet Profile Required
+      </Text>
+      <Text style={{ color: "#7F1D1D", fontSize: 13, lineHeight: 18, marginBottom: 12 }}>
+        To receive AI-powered emergency guidance, please complete your pet's
+        profile first. In the meantime, find the nearest emergency vet now.
+      </Text>
+
+      <TouchableOpacity
+        onPress={openMap}
+        style={{
+          backgroundColor: "#EF4444",
+          borderRadius: 8,
+          paddingVertical: 10,
+          alignItems: "center",
+          marginBottom: 8,
+        }}
+      >
+        <Text style={{ color: "#FFFFFF", fontWeight: "700", fontSize: 14 }}>
+          Find Emergency Vet Near Me
+        </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={onDismiss}
+        style={{
+          backgroundColor: "#FFFFFF",
+          borderRadius: 8,
+          paddingVertical: 8,
+          alignItems: "center",
+          borderWidth: 1,
+          borderColor: "#D1D5DB",
+        }}
+      >
+        <Text style={{ color: "#6B7280", fontSize: 13 }}>Dismiss</Text>
       </TouchableOpacity>
     </View>
   );
@@ -795,6 +895,10 @@ export default function ChatScreen() {
   >([]);
   const [clarifyingCount, setClarifyingCount] = useState(0);
   const [loadingPets, setLoadingPets] = useState(true);
+  const [gateBlocked, setGateBlocked] = useState(false);
+  const [gateNearestVetUrl, setGateNearestVetUrl] = useState(
+    "https://maps.google.com/maps?q=emergency+vet+near+me"
+  );
 
   const scrollRef = useRef<ScrollView>(null);
   const shownAffiliates = useRef<Set<string>>(new Set());
@@ -858,6 +962,7 @@ export default function ChatScreen() {
       setConversationHistory([]);
       setClarifyingCount(0);
       shownAffiliates.current = new Set();
+      setGateBlocked(false);
     },
     [pets]
   );
@@ -904,6 +1009,48 @@ export default function ChatScreen() {
         throw new Error("Session expired. Please sign in again.");
       }
       const accessToken = authSession.access_token;
+
+      // ── Emergency Gatekeeper ───────────────────────────────────────────────
+      // If the message contains emergency keywords, verify the user has a
+      // complete pet profile before routing to the expensive Tier 3 model.
+      // All attempts (allowed and blocked) are logged server-side.
+      if (isEmergencyQuery(text)) {
+        setGateBlocked(false); // reset any previous block banner
+        try {
+          const gateResp = await fetch(
+            `${SUPABASE_URL}/functions/v1/emergency-gate`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                apikey: SUPABASE_ANON_KEY,
+                Authorization: `Bearer ${accessToken}`,
+              },
+              body: JSON.stringify({
+                pet_id: selectedPetId,
+                query_text: text,
+              }),
+            }
+          );
+
+          if (gateResp.ok) {
+            const gateData = await gateResp.json();
+            if (!gateData.allowed) {
+              setGateNearestVetUrl(
+                gateData.nearest_vet_url ??
+                  "https://maps.google.com/maps?q=emergency+vet+near+me"
+              );
+              setGateBlocked(true);
+              setLoading(false);
+              return;
+            }
+          }
+          // If the gatekeeper call itself fails (network error, 5xx), fall
+          // through and allow the triage call — do not block on infra issues.
+        } catch {
+          // non-blocking — gate failure should not prevent emergency triage
+        }
+      }
 
       const resp = await fetch(
         `${SUPABASE_URL}/functions/v1/triage`,
@@ -1068,6 +1215,14 @@ export default function ChatScreen() {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
+        {/* Emergency Gate Blocked Banner */}
+        {gateBlocked && (
+          <GateBlockedBanner
+            nearestVetUrl={gateNearestVetUrl}
+            onDismiss={() => setGateBlocked(false)}
+          />
+        )}
+
         {messages.map((msg) => (
           <MessageBubble
             key={msg.id}
