@@ -98,8 +98,8 @@ const MODERATE_KEYWORDS = [
 ];
 
 const MODELS = {
-  tier1: "anthropic/claude-haiku-3-5",
-  tier2: "anthropic/claude-sonnet-4-5",
+  tier1: "anthropic/claude-3.5-haiku",
+  tier2: "anthropic/claude-sonnet-4.5",
   tier3: "anthropic/claude-opus-4",
 } as const;
 
