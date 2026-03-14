@@ -897,10 +897,13 @@ export default function ChatScreen() {
     const isFinalTurn = clarifyingCount >= 1;
 
     try {
-      // Use the authenticated user's JWT — not the public anon key — so the
-      // edge function can verify the caller's identity and enforce ownership.
+      // Use the authenticated user's JWT. The edge function calls getUser(jwt)
+      // to verify identity — the anon key is NOT a valid user token.
       const { data: { session: authSession } } = await supabase.auth.getSession();
-      const accessToken = authSession?.access_token ?? SUPABASE_ANON_KEY;
+      if (!authSession?.access_token) {
+        throw new Error("Session expired. Please sign in again.");
+      }
+      const accessToken = authSession.access_token;
 
       const resp = await fetch(
         `${SUPABASE_URL}/functions/v1/triage`,
@@ -1173,3 +1176,4 @@ export default function ChatScreen() {
     </SafeAreaView>
   );
 }
+
