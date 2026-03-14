@@ -100,7 +100,7 @@ const MODERATE_KEYWORDS = [
 const MODELS = {
   tier1: "anthropic/claude-3.5-haiku",
   tier2: "anthropic/claude-sonnet-4.5",
-  tier3: "anthropic/claude-opus-4",
+  tier3: "anthropic/claude-opus-4-6",
 } as const;
 
 type RoutingTier = 1 | 2 | 3;
