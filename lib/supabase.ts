@@ -1,6 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Platform } from "react-native";
 
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!;
@@ -16,10 +15,10 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     storage: AsyncStorage,
     autoRefreshToken: true,
     persistSession: true,
-    // PKCE flow: magic-link redirects with ?code= instead of #access_token=.
-    // The callback exchanges the code server-side — avoids gotrue-js 120s stale check.
-    // detectSessionInUrl stays false; we handle the exchange manually in app/auth/callback.tsx.
-    flowType: Platform.OS === "web" ? "pkce" : "implicit",
+    // PKCE flow required for email+password on both native and web.
+    // OAuth and password reset redirects are exchanged via app/auth/callback.tsx.
+    // detectSessionInUrl stays false; we handle code exchange manually.
+    flowType: "pkce",
     detectSessionInUrl: false,
   },
 });

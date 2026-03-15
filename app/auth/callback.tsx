@@ -4,8 +4,9 @@ import { useRouter, useLocalSearchParams } from "expo-router";
 import { supabase } from "@/lib/supabase";
 
 /**
- * Auth callback route — handles magic-link and OAuth redirects on web (PKCE flow).
+ * Auth callback route — handles OAuth (Google) and password reset redirects (PKCE flow).
  * Supabase redirects here with ?code=xxx. We exchange it for a session, then navigate home.
+ * Magic link auth has been removed; this route is kept for OAuth and password reset only.
  */
 export default function AuthCallback() {
   const router = useRouter();
