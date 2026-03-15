@@ -73,6 +73,39 @@ interface UnifiedTriageResponse {
 const DISCLAIMER =
   "PawDoc provides guidance, not diagnosis. Always consult a licensed veterinarian for medical decisions.";
 
+// ---------------------------------------------------------------------------
+// Emergency Gatekeeper — full 20-keyword hardcoded gate (zero LLM cost on match)
+// ---------------------------------------------------------------------------
+
+const EMERGENCY_GATE_KEYWORDS = [
+  "blood",
+  "bleeding",
+  "unresponsive",
+  "not breathing",
+  "breathing difficulty",
+  "choking",
+  "hit by car",
+  "seizure",
+  "convulsing",
+  "poison",
+  "poisoned",
+  "chocolate",
+  "lily",
+  "lilies",
+  "grapes",
+  "antifreeze",
+  "bloat",
+  "swollen stomach",
+  "collapsed",
+  "unconscious",
+];
+
+function isEmergencyGate(message: string): boolean {
+  const lower = message.toLowerCase();
+  return EMERGENCY_GATE_KEYWORDS.some((kw) => lower.includes(kw));
+}
+
+// Legacy tier-routing keyword list (kept for selectTier only)
 const EMERGENCY_KEYWORDS = [
   "emergency",
   "seizure",
@@ -329,6 +362,79 @@ async function handleRequest(req: Request): Promise<Response> {
   }
 
   // -------------------------------------------------------------------------
+  // Parse body early — needed by Emergency Gatekeeper before auth
+  // -------------------------------------------------------------------------
+  let body: TriageRequest;
+  try {
+    body = await req.json();
+  } catch {
+    return new Response(JSON.stringify({ error: "Invalid JSON body" }), {
+      status: 400,
+      headers: { "Content-Type": "application/json", ...CORS_HEADERS },
+    });
+  }
+
+  const { pet_id, message, session_id, conversation_history = [], is_final_turn = false } = body;
+
+  if (!pet_id || !message || !session_id) {
+    return new Response(
+      JSON.stringify({ error: "pet_id, message, and session_id are required" }),
+      { status: 400, headers: { "Content-Type": "application/json", ...CORS_HEADERS } }
+    );
+  }
+
+  // -------------------------------------------------------------------------
+  // EMERGENCY GATEKEEPER — ABSOLUTE FIRST LOGIC BLOCK
+  // Zero LLM cost. Hardcoded response. Runs before auth, before pet fetch.
+  // -------------------------------------------------------------------------
+  if (isEmergencyGate(message)) {
+    // Log to health_logs via service role (do not let log failure block the response)
+    const supabaseGate = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
+    const { error: logError } = await supabaseGate.from("health_logs").insert({
+      pet_id,
+      type: "emergency_trigger",
+      summary: message,
+      ai_response: null,
+      severity_score: 10,
+    });
+    if (logError) {
+      console.error("[triage] emergency_trigger log failed:", logError.message);
+    }
+
+    const emergencyResponse = {
+      type: "emergency",
+      tier: 3,
+      model: "none",
+      session_id,
+      response: {
+        severity: 10,
+        topic_keyword: null,
+        assessment: "This sounds like a potential emergency. Please act immediately.",
+        likely_causes: [],
+        home_care: null,
+        vet_urgency: "emergency",
+        emergency_steps: [
+          "Call your nearest emergency vet NOW",
+          "Keep your pet calm and still",
+          "Do not give food, water, or medication",
+          "Bring this conversation to the vet",
+        ],
+        disclaimer:
+          "PawDoc provides guidance, not diagnosis. Always consult a licensed veterinarian for medical decisions.",
+        affiliate_cta: {
+          affiliate_name: "Vetster",
+          affiliate_url: "https://vetster.com/?utm_source=pawdoc&utm_medium=emergency",
+          commission_type: "cpa",
+        },
+      },
+    };
+
+    return new Response(JSON.stringify(emergencyResponse), {
+      headers: { "Content-Type": "application/json", ...CORS_HEADERS },
+    });
+  }
+
+  // -------------------------------------------------------------------------
   // 0. Authenticate caller — extract JWT and resolve user ID
   // -------------------------------------------------------------------------
   const authHeader = req.headers.get("Authorization");
@@ -354,25 +460,6 @@ async function handleRequest(req: Request): Promise<Response> {
   const userId = authUser.id;
 
   const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
-
-  let body: TriageRequest;
-  try {
-    body = await req.json();
-  } catch {
-    return new Response(JSON.stringify({ error: "Invalid JSON body" }), {
-      status: 400,
-      headers: { "Content-Type": "application/json", ...CORS_HEADERS },
-    });
-  }
-
-  const { pet_id, message, session_id, conversation_history = [], is_final_turn = false } = body;
-
-  if (!pet_id || !message || !session_id) {
-    return new Response(
-      JSON.stringify({ error: "pet_id, message, and session_id are required" }),
-      { status: 400, headers: { "Content-Type": "application/json", ...CORS_HEADERS } }
-    );
-  }
 
   // -------------------------------------------------------------------------
   // 0b. Verify pet ownership — pet must belong to the authenticated user
