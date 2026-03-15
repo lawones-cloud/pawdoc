@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "emergency-gate.schema.json",
+  "title": "Emergency Gate",
+  "description": "JSON schemas for the emergency-gate Edge Function request and response payloads",
+  "definitions": {
+    "RequestBody": {
+      "type": "object",
+      "description": "POST body sent to /functions/v1/emergency-gate",
+      "properties": {
+        "pet_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Optional UUID of the specific pet to verify. If omitted, any verified pet owned by the caller grants access."
+        },
+        "query_text": {
+          "type": "string",
+          "description": "The user's emergency message. Stored in emergency_gate_logs; not used for gate logic."
+        }
+      },
+      "additionalProperties": false
+    },
+    "SuccessResponse": {
+      "type": "object",
+      "description": "Returned on every authenticated POST — HTTP 200",
+      "required": ["allowed", "reason", "nearest_vet_url"],
+      "properties": {
+        "allowed": {
+          "type": "boolean",
+          "description": "true if the caller has a verified pet profile and may proceed to Tier 3 (Opus) triage; false otherwise"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "enum": [
+            "Pet profile verified",
+            "No verified pet profile found"
+          ],
+          "description": "Human-readable explanation of the gate decision"
+        },
+        "nearest_vet_url": {
+          "type": "string",
+          "pattern": "^https://",
+          "description": "Google Maps universal URL for the nearest emergency vet. Always present regardless of the allowed value."
+        }
+      },
+      "additionalProperties": false
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "description": "Returned on 401 (missing/invalid JWT), 405 (wrong method), or 500 (unhandled error)",
+      "required": ["error"],
+      "properties": {
+        "error": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Machine-readable error label"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [
+    { "$ref": "#/definitions/SuccessResponse" },
+    { "$ref": "#/definitions/ErrorResponse" }
+  ]
+}

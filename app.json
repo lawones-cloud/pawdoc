@@ -13,16 +13,32 @@
       "backgroundColor": "#FAFAFA"
     },
     "primaryColor": "#2D6A4F",
+    "privacy": "This app requires access to your device to provide AI-powered pet health guidance.",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "ai.openclaw.pawdoc"
+      "bundleIdentifier": "com.lawones.pawdoc",
+      "buildNumber": "1",
+      "infoPlist": {
+        "NSCameraUsageDescription": "PawDoc uses the camera to allow you to take photos of your pet for health tracking.",
+        "NSPhotoLibraryUsageDescription": "PawDoc accesses your photo library to allow you to upload photos of your pet.",
+        "NSUserNotificationsUsageDescription": "PawDoc sends you reminders for your pet's medications and vet appointments.",
+        "NSLocationWhenInUseUsageDescription": "PawDoc uses your location to help find the nearest emergency vet in urgent situations."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#2D6A4F"
       },
-      "package": "ai.openclaw.pawdoc"
+      "package": "com.lawones.pawdoc",
+      "versionCode": 1,
+      "permissions": [
+        "NOTIFICATIONS",
+        "RECEIVE_BOOT_COMPLETED",
+        "VIBRATE",
+        "ACCESS_NETWORK_STATE",
+        "INTERNET"
+      ]
     },
     "web": {
       "bundler": "metro",

@@ -71,7 +71,7 @@ interface UnifiedTriageResponse {
 // ---------------------------------------------------------------------------
 
 const DISCLAIMER =
-  "PawDoc provides guidance, not diagnosis. Always consult a licensed veterinarian for medical decisions.";
+  "PawDoc provides guidance, not a medical evaluation. Always consult a licensed veterinarian for medical decisions.";
 
 // ---------------------------------------------------------------------------
 // Emergency Gatekeeper — full 20-keyword hardcoded gate (zero LLM cost on match)
@@ -175,7 +175,7 @@ function buildSystemPromptTier1(pet: PetProfile): string {
   const age = approximateAge(pet.dob);
   const conditions = pet.conditions?.join(", ") || "none";
   const allergies = pet.allergies?.join(", ") || "none";
-  return `You are PawDoc, a friendly AI pet health assistant. You provide guidance, not diagnosis.
+  return `You are PawDoc, a friendly AI pet health assistant. You provide guidance, not a veterinary evaluation.
 Pet Profile: Name: ${pet.name}, Species: ${pet.species}, Breed: ${pet.breed || "unknown"}, Age: ${age}, Conditions: ${conditions}, Allergies: ${allergies}.
 
 First, ask exactly 3 clarifying questions about: (1) duration of symptoms, (2) severity (ask user to rate 1-10), and (3) recent changes in behavior or appetite.
@@ -205,7 +205,7 @@ function buildSystemPromptTier2(pet: PetProfile): string {
   const age = approximateAge(pet.dob);
   const conditions = pet.conditions?.join(", ") || "none";
   const allergies = pet.allergies?.join(", ") || "none";
-  return `You are PawDoc, a veterinary expert. You provide guidance, not diagnosis.
+  return `You are PawDoc, a veterinary expert. You provide guidance, not a veterinary evaluation.
 Pet Profile: Name: ${pet.name}, Species: ${pet.species}, Breed: ${pet.breed || "unknown"}, Age: ${age}, Conditions: ${conditions}, Allergies: ${allergies}.
 
 The query suggests moderate concern. Ask exactly 3 clarifying questions about: (1) duration, (2) severity (ask user to rate 1-10), and (3) whether symptoms are worsening.
@@ -420,7 +420,7 @@ async function handleRequest(req: Request): Promise<Response> {
           "Bring this conversation to the vet",
         ],
         disclaimer:
-          "PawDoc provides guidance, not diagnosis. Always consult a licensed veterinarian for medical decisions.",
+          "PawDoc provides guidance, not a medical evaluation. Always consult a licensed veterinarian for medical decisions.",
         affiliate_cta: {
           affiliate_name: "Vetster",
           affiliate_url: "https://vetster.com/?utm_source=pawdoc&utm_medium=emergency",

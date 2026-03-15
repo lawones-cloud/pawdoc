@@ -1040,7 +1040,7 @@ export default function NutritionScreen() {
                 textAlign: "center",
               }}
             >
-              PawDoc provides nutritional guidance, not veterinary diagnosis.
+              PawDoc provides nutritional guidance, not veterinary assessment.
               Always consult a licensed veterinarian for medical decisions.
             </Text>
           </View>

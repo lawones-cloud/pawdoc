@@ -414,7 +414,7 @@ function DetailView({
               <Text style={{ fontFamily: "Inter_600SemiBold" }}>Disclaimer: </Text>
               This guide provides general first aid information based on ASPCA and VCA Hospitals
               veterinary guidelines. It is not a substitute for professional veterinary care.
-              Always contact a licensed veterinarian for diagnosis and treatment. In a life-threatening
+              Always contact a licensed veterinarian for evaluation and treatment. In a life-threatening
               emergency, go to the nearest emergency animal hospital immediately.
             </Text>
           </View>

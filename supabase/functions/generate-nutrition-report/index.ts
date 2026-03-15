@@ -95,7 +95,7 @@ function buildSystemPrompt(pet: PetProfile): string {
     ? pet.allergies.join(", ")
     : "none";
 
-  return `You are PawDoc's Nutrition Advisor, an expert in veterinary dietary science with 20+ years of experience. You provide evidence-based dietary guidance tailored to individual pet profiles. You do not diagnose medical conditions; you provide nutritional guidance only.
+  return `You are PawDoc's Nutrition Advisor, an expert in veterinary dietary science with 20+ years of experience. You provide evidence-based dietary guidance tailored to individual pet profiles. You do not evaluate or assess medical conditions; you provide nutritional guidance only.
 
 Pet Profile:
 - Name: ${pet.name}

@@ -152,6 +152,15 @@ export default function WelcomeScreen() {
                 <View className="w-2 h-2 rounded-full bg-border" />
                 <View className="w-2 h-2 rounded-full bg-border" />
               </View>
+
+              {/* Affiliate Disclosure */}
+              <Text
+                className="text-xs text-text-secondary text-center mt-4 px-4"
+                style={{ fontFamily: "Inter_400Regular" }}
+              >
+                PawDoc is free to use. We may earn a commission if you purchase
+                through partner links shown in the app, at no extra cost to you.
+              </Text>
             </View>
           </View>
         </ScrollView>
