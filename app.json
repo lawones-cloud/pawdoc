@@ -13,7 +13,6 @@
       "backgroundColor": "#FAFAFA"
     },
     "primaryColor": "#2D6A4F",
-    "privacy": "This app requires access to your device to provide AI-powered pet health guidance.",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.lawones.pawdoc",
