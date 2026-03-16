@@ -25,6 +25,7 @@ import {
   Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { LinearGradient } from "expo-linear-gradient";
 import { supabase } from "../../lib/supabase";
 
 // ---------------------------------------------------------------------------
@@ -1139,9 +1140,9 @@ export default function ChatScreen() {
 
   if (loadingPets) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#FAFAFA" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#F7F8F6" }}>
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-          <ActivityIndicator size="large" color="#2D6A4F" />
+          <ActivityIndicator size="large" color="#1B4332" />
         </View>
       </SafeAreaView>
     );
@@ -1149,16 +1150,38 @@ export default function ChatScreen() {
 
   if (!selectedPetId) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#FAFAFA" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#F7F8F6" }}>
+        <LinearGradient
+          colors={["#1B4332", "#2D6A4F"]}
+          style={{
+            paddingHorizontal: 20,
+            paddingTop: 56,
+            paddingBottom: 20,
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ fontSize: 22, marginRight: 10 }}>🩺</Text>
+          <View>
+            <Text
+              style={{ color: "#FFFFFF", fontSize: 22, fontFamily: "Nunito_700Bold" }}
+            >
+              Symptom Triage
+            </Text>
+            <Text style={{ color: "rgba(255,255,255,0.7)", fontSize: 12, fontFamily: "Inter_400Regular" }}>
+              AI-powered pet health guidance
+            </Text>
+          </View>
+        </LinearGradient>
         <View
           style={{ flex: 1, alignItems: "center", justifyContent: "center", padding: 32 }}
         >
           <Text style={{ fontSize: 40, marginBottom: 16 }}>🐾</Text>
           <Text
             style={{
-              color: "#1A1A1A",
+              color: "#0F1F17",
               fontSize: 18,
-              fontWeight: "700",
+              fontFamily: "Nunito_700Bold",
               textAlign: "center",
               marginBottom: 8,
             }}
@@ -1166,7 +1189,7 @@ export default function ChatScreen() {
             No pet profile found
           </Text>
           <Text
-            style={{ color: "#6B7280", fontSize: 14, textAlign: "center", lineHeight: 20 }}
+            style={{ color: "#52796F", fontSize: 14, fontFamily: "Inter_400Regular", textAlign: "center", lineHeight: 20 }}
           >
             Set up your pet profile first to use the AI triage chat.
           </Text>
@@ -1176,29 +1199,30 @@ export default function ChatScreen() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#FAFAFA" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#F7F8F6" }}>
       {/* Header */}
-      <View
+      <LinearGradient
+        colors={["#1B4332", "#2D6A4F"]}
         style={{
-          backgroundColor: "#2D6A4F",
-          paddingHorizontal: 16,
-          paddingVertical: 14,
+          paddingHorizontal: 20,
+          paddingTop: 56,
+          paddingBottom: 16,
           flexDirection: "row",
           alignItems: "center",
         }}
       >
-        <Text style={{ fontSize: 22, marginRight: 8 }}>🩺</Text>
+        <Text style={{ fontSize: 22, marginRight: 10 }}>🩺</Text>
         <View>
           <Text
-            style={{ color: "#FFFFFF", fontSize: 18, fontWeight: "700" }}
+            style={{ color: "#FFFFFF", fontSize: 22, fontFamily: "Nunito_700Bold" }}
           >
             Symptom Triage
           </Text>
-          <Text style={{ color: "#B7E4C7", fontSize: 12 }}>
+          <Text style={{ color: "rgba(255,255,255,0.7)", fontSize: 12, fontFamily: "Inter_400Regular" }}>
             AI-powered pet health guidance
           </Text>
         </View>
-      </View>
+      </LinearGradient>
 
       {/* Pet Selector */}
       <PetSelector
@@ -1211,7 +1235,7 @@ export default function ChatScreen() {
       <ScrollView
         ref={scrollRef}
         style={{ flex: 1 }}
-        contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 16 }}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 16, paddingBottom: 120 }}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >

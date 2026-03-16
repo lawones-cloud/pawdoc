@@ -57,7 +57,7 @@ export default function AuthCallback() {
 
   return (
     <View className="flex-1 bg-background items-center justify-center">
-      <ActivityIndicator size="large" color="#2D6A4F" />
+      <ActivityIndicator size="large" color="#1B4332" />
     </View>
   );
 }

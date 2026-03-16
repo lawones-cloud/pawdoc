@@ -1,7 +1,15 @@
-import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+  Alert,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter, useFocusEffect } from "expo-router";
 import { useCallback } from "react";
+import { LinearGradient } from "expo-linear-gradient";
 import { usePets, Pet } from "@/hooks/usePets";
 
 const MAX_FREE_PETS = 2;
@@ -13,6 +21,18 @@ function getAge(dob: string | null): string {
   return age <= 0 ? "< 1 yr" : age === 1 ? "1 yr" : `${age} yrs`;
 }
 
+function speciesBorderColor(species: string): string {
+  if (species === "dog") return "#1B4332";
+  if (species === "cat") return "#2563EB";
+  return "#7C3AED";
+}
+
+function speciesBgColor(species: string): string {
+  if (species === "dog") return "#D8F3DC";
+  if (species === "cat") return "#DBEAFE";
+  return "#EDE9FE";
+}
+
 function PetCard({ pet, onPress }: { pet: Pet; onPress: () => void }) {
   const speciesEmoji =
     pet.species === "dog" ? "🐶" : pet.species === "cat" ? "🐱" : "🐰";
@@ -20,59 +40,105 @@ function PetCard({ pet, onPress }: { pet: Pet; onPress: () => void }) {
   const weightLabel = pet.weight
     ? `${(pet.weight * 2.20462).toFixed(1)} lbs`
     : null;
+  const borderColor = speciesBorderColor(pet.species);
+  const bgColor = speciesBgColor(pet.species);
 
   return (
     <TouchableOpacity
-      className="bg-surface border rounded-2xl p-4 mb-3 flex-row items-center"
-      style={{ borderColor: "#E5E7EB" }}
+      style={{
+        backgroundColor: "#FFFFFF",
+        borderRadius: 20,
+        padding: 16,
+        marginBottom: 12,
+        flexDirection: "row",
+        alignItems: "center",
+        borderLeftWidth: 4,
+        borderLeftColor: borderColor,
+        shadowColor: "#1B4332",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.08,
+        shadowRadius: 12,
+        elevation: 3,
+      }}
       onPress={onPress}
       accessibilityLabel={`View ${pet.name}'s profile`}
       accessibilityRole="button"
     >
-      {/* Avatar */}
-      <View className="w-14 h-14 bg-primary/10 rounded-xl items-center justify-center mr-4">
-        <Text style={{ fontSize: 28 }}>{speciesEmoji}</Text>
+      {/* Species badge */}
+      <View
+        style={{
+          width: 52,
+          height: 52,
+          borderRadius: 26,
+          backgroundColor: bgColor,
+          alignItems: "center",
+          justifyContent: "center",
+          marginRight: 14,
+        }}
+      >
+        <Text style={{ fontSize: 26 }}>{speciesEmoji}</Text>
       </View>
 
       {/* Info */}
-      <View className="flex-1">
+      <View style={{ flex: 1 }}>
         <Text
-          className="text-text-primary text-base mb-0.5"
-          style={{ fontFamily: "Nunito_700Bold" }}
+          style={{
+            color: "#0F1F17",
+            fontSize: 17,
+            fontFamily: "Nunito_700Bold",
+            marginBottom: 2,
+            letterSpacing: -0.2,
+          }}
         >
           {pet.name}
         </Text>
-        {pet.breed ? (
-          <Text
-            className="text-text-secondary text-xs mb-1"
-            style={{ fontFamily: "Inter_400Regular" }}
-          >
-            {pet.breed}
-          </Text>
-        ) : (
-          <Text
-            className="text-text-secondary text-xs mb-1 capitalize"
-            style={{ fontFamily: "Inter_400Regular" }}
-          >
-            {pet.species}
-          </Text>
-        )}
-        <View className="flex-row items-center gap-3">
+        <Text
+          style={{
+            color: "#52796F",
+            fontSize: 13,
+            fontFamily: "Inter_400Regular",
+            marginBottom: 6,
+            textTransform: "capitalize",
+          }}
+        >
+          {pet.breed ?? pet.species}
+        </Text>
+        <View style={{ flexDirection: "row", gap: 6 }}>
           {ageLabel ? (
-            <View className="bg-background rounded-full px-2 py-0.5">
+            <View
+              style={{
+                backgroundColor: "#F0F4F2",
+                borderRadius: 999,
+                paddingHorizontal: 10,
+                paddingVertical: 3,
+              }}
+            >
               <Text
-                className="text-text-secondary text-xs"
-                style={{ fontFamily: "Inter_400Regular" }}
+                style={{
+                  color: "#52796F",
+                  fontSize: 11,
+                  fontFamily: "Inter_500Medium",
+                }}
               >
                 {ageLabel}
               </Text>
             </View>
           ) : null}
           {weightLabel ? (
-            <View className="bg-background rounded-full px-2 py-0.5">
+            <View
+              style={{
+                backgroundColor: "#F0F4F2",
+                borderRadius: 999,
+                paddingHorizontal: 10,
+                paddingVertical: 3,
+              }}
+            >
               <Text
-                className="text-text-secondary text-xs"
-                style={{ fontFamily: "Inter_400Regular" }}
+                style={{
+                  color: "#52796F",
+                  fontSize: 11,
+                  fontFamily: "Inter_500Medium",
+                }}
               >
                 {weightLabel}
               </Text>
@@ -82,7 +148,7 @@ function PetCard({ pet, onPress }: { pet: Pet; onPress: () => void }) {
       </View>
 
       {/* Chevron */}
-      <Text className="text-text-secondary text-lg ml-2">›</Text>
+      <Text style={{ color: "#95A89F", fontSize: 20, marginLeft: 8 }}>›</Text>
     </TouchableOpacity>
   );
 }
@@ -91,7 +157,6 @@ export default function PetsScreen() {
   const router = useRouter();
   const { pets, loading, error, refetch } = usePets();
 
-  // Refresh list every time tab comes into focus
   useFocusEffect(
     useCallback(() => {
       refetch();
@@ -116,62 +181,106 @@ export default function PetsScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-background">
-      <View className="flex-1 px-6 pt-8 pb-6">
-        {/* Header */}
-        <View className="flex-row items-center justify-between mb-8">
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#F7F8F6" }} edges={["top"]}>
+      {/* Gradient Header */}
+      <LinearGradient
+        colors={["#1B4332", "#2D6A4F"]}
+        style={{
+          paddingHorizontal: 20,
+          paddingTop: 20,
+          paddingBottom: 20,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Text style={{ fontSize: 22, marginRight: 10 }}>🐾</Text>
           <View>
             <Text
-              className="text-2xl text-primary"
-              style={{ fontFamily: "Nunito_700Bold" }}
+              style={{
+                color: "#FFFFFF",
+                fontSize: 22,
+                fontFamily: "Nunito_700Bold",
+                letterSpacing: -0.3,
+              }}
             >
               My Pets
             </Text>
             <Text
-              className="text-sm text-text-secondary"
-              style={{ fontFamily: "Inter_400Regular" }}
+              style={{
+                color: "rgba(255,255,255,0.7)",
+                fontSize: 12,
+                fontFamily: "Inter_400Regular",
+              }}
             >
               Health profiles and records
             </Text>
           </View>
-          <TouchableOpacity
-            className={`rounded-xl px-4 py-2 ${atLimit ? "bg-gray-200" : "bg-primary"}`}
-            onPress={handleAddPet}
-            accessibilityLabel="Add a pet"
-            accessibilityRole="button"
-            accessibilityState={{ disabled: atLimit }}
-          >
-            <Text
-              className={`text-sm ${atLimit ? "text-text-secondary" : "text-white"}`}
-              style={{ fontFamily: "Inter_600SemiBold" }}
-            >
-              + Add Pet
-            </Text>
-          </TouchableOpacity>
         </View>
+        <TouchableOpacity
+          style={{
+            backgroundColor: atLimit
+              ? "rgba(255,255,255,0.15)"
+              : "rgba(255,255,255,0.22)",
+            borderRadius: 12,
+            paddingHorizontal: 14,
+            paddingVertical: 8,
+            borderWidth: 1,
+            borderColor: "rgba(255,255,255,0.3)",
+          }}
+          onPress={handleAddPet}
+          accessibilityLabel="Add a pet"
+          accessibilityRole="button"
+          accessibilityState={{ disabled: atLimit }}
+        >
+          <Text
+            style={{
+              color: "#FFFFFF",
+              fontSize: 13,
+              fontFamily: "Inter_600SemiBold",
+            }}
+          >
+            + Add Pet
+          </Text>
+        </TouchableOpacity>
+      </LinearGradient>
 
+      <View style={{ flex: 1, paddingHorizontal: 20, paddingTop: 20 }}>
         {/* Loading state */}
         {loading && pets.length === 0 ? (
-          <View className="flex-1 items-center justify-center">
-            <ActivityIndicator size="large" color="#2D6A4F" />
+          <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+            <ActivityIndicator size="large" color="#1B4332" />
           </View>
         ) : error ? (
-          <View className="flex-1 items-center justify-center">
+          <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
             <Text
-              className="text-text-secondary text-center mb-4"
-              style={{ fontFamily: "Inter_400Regular" }}
+              style={{
+                color: "#52796F",
+                textAlign: "center",
+                marginBottom: 16,
+                fontFamily: "Inter_400Regular",
+              }}
             >
               {error}
             </Text>
             <TouchableOpacity
-              className="bg-primary rounded-xl px-6 py-3"
+              style={{
+                backgroundColor: "#1B4332",
+                borderRadius: 14,
+                paddingHorizontal: 24,
+                paddingVertical: 12,
+              }}
               onPress={refetch}
               accessibilityLabel="Retry loading pets"
               accessibilityRole="button"
             >
               <Text
-                className="text-white text-sm"
-                style={{ fontFamily: "Inter_600SemiBold" }}
+                style={{
+                  color: "#FFFFFF",
+                  fontSize: 14,
+                  fontFamily: "Inter_600SemiBold",
+                }}
               >
                 Try Again
               </Text>
@@ -180,31 +289,61 @@ export default function PetsScreen() {
         ) : pets.length === 0 ? (
           /* Empty state */
           <View
-            className="flex-1 bg-surface border rounded-xl items-center justify-center p-8"
-            style={{ borderColor: "#E5E7EB" }}
+            style={{
+              flex: 1,
+              backgroundColor: "#FFFFFF",
+              borderRadius: 24,
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 32,
+              shadowColor: "#1B4332",
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.06,
+              shadowRadius: 16,
+              elevation: 2,
+            }}
           >
-            <Text className="text-5xl mb-4">🐾</Text>
+            <Text style={{ fontSize: 52, marginBottom: 16 }}>🐾</Text>
             <Text
-              className="text-lg text-text-primary text-center mb-2"
-              style={{ fontFamily: "Nunito_700Bold" }}
+              style={{
+                fontSize: 18,
+                color: "#0F1F17",
+                textAlign: "center",
+                marginBottom: 8,
+                fontFamily: "Nunito_700Bold",
+              }}
             >
               No pets yet
             </Text>
             <Text
-              className="text-sm text-text-secondary text-center mb-6"
-              style={{ fontFamily: "Inter_400Regular" }}
+              style={{
+                fontSize: 14,
+                color: "#52796F",
+                textAlign: "center",
+                marginBottom: 24,
+                lineHeight: 20,
+                fontFamily: "Inter_400Regular",
+              }}
             >
               Add your first pet to track their health records, vaccinations, and more.
             </Text>
             <TouchableOpacity
-              className="bg-primary rounded-xl px-6 py-3"
+              style={{
+                backgroundColor: "#1B4332",
+                borderRadius: 14,
+                paddingHorizontal: 24,
+                paddingVertical: 13,
+              }}
               onPress={() => router.push("/pet-form")}
               accessibilityLabel="Add your first pet"
               accessibilityRole="button"
             >
               <Text
-                className="text-white text-sm"
-                style={{ fontFamily: "Inter_600SemiBold" }}
+                style={{
+                  color: "#FFFFFF",
+                  fontSize: 14,
+                  fontFamily: "Inter_600SemiBold",
+                }}
               >
                 Add Your First Pet
               </Text>
@@ -229,18 +368,27 @@ export default function PetsScreen() {
             showsVerticalScrollIndicator={false}
             onRefresh={refetch}
             refreshing={loading}
+            contentContainerStyle={{ paddingBottom: 120 }}
           />
         )}
 
         {/* Free tier note */}
-        <Text
-          className="text-xs text-text-secondary text-center mt-4"
-          style={{ fontFamily: "Inter_400Regular" }}
-        >
-          {atLimit
-            ? `You've reached the free limit of ${MAX_FREE_PETS} pets. Upgrade for unlimited.`
-            : `Free accounts support up to ${MAX_FREE_PETS} pets.`}
-        </Text>
+        {pets.length > 0 && (
+          <Text
+            style={{
+              color: "#95A89F",
+              fontSize: 12,
+              textAlign: "center",
+              marginTop: 8,
+              marginBottom: 16,
+              fontFamily: "Inter_400Regular",
+            }}
+          >
+            {atLimit
+              ? `You've reached the free limit of ${MAX_FREE_PETS} pets. Upgrade for unlimited.`
+              : `Free accounts support up to ${MAX_FREE_PETS} pets.`}
+          </Text>
+        )}
       </View>
     </SafeAreaView>
   );

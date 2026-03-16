@@ -13,6 +13,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import * as Linking from "expo-linking";
+import { LinearGradient } from "expo-linear-gradient";
 import { supabase } from "@/lib/supabase";
 import { Colors } from "@/constants/theme";
 
@@ -166,73 +167,168 @@ export default function LoginScreen() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-background">
+    <View style={{ flex: 1, backgroundColor: "#F7F8F6" }}>
       <KeyboardAvoidingView
-        className="flex-1"
+        style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <ScrollView
           contentContainerStyle={{ flexGrow: 1 }}
           keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
         >
-          <View className="flex-1 px-6 pt-12 pb-8">
-            {/* Back to landing */}
+          {/* ── Gradient Hero (top ~40%) ── */}
+          <LinearGradient
+            colors={["#1B4332", "#2D6A4F", "#52B788"]}
+            style={{
+              paddingTop: Platform.OS === "ios" ? 60 : 48,
+              paddingBottom: 48,
+              paddingHorizontal: 32,
+              alignItems: "center",
+            }}
+          >
+            {/* Back button */}
             <TouchableOpacity
-              className="mb-8"
+              style={{
+                position: "absolute",
+                top: Platform.OS === "ios" ? 60 : 48,
+                left: 20,
+                paddingHorizontal: 12,
+                paddingVertical: 8,
+              }}
               onPress={() => router.push("/landing")}
               accessibilityLabel="Back to home page"
               accessibilityRole="button"
             >
-              <Text className="text-primary text-sm" style={{ fontFamily: "Inter_500Medium" }}>
+              <Text
+                style={{
+                  color: "rgba(255,255,255,0.8)",
+                  fontSize: 14,
+                  fontFamily: "Inter_500Medium",
+                }}
+              >
                 ← Back
               </Text>
             </TouchableOpacity>
 
-            {/* Branding */}
-            <View className="items-center mb-10">
-              <View className="w-20 h-20 rounded-full bg-primary items-center justify-center mb-4">
-                <Text className="text-4xl">🐾</Text>
-              </View>
-              <Text
-                className="text-3xl text-primary"
-                style={{ fontFamily: "Nunito_700Bold" }}
-              >
-                PawDoc
-              </Text>
-              <Text
-                className="text-sm text-text-secondary mt-1"
-                style={{ fontFamily: "Inter_400Regular" }}
-              >
-                Your pet's AI doctor
-              </Text>
+            {/* Logo */}
+            <View
+              style={{
+                width: 76,
+                height: 76,
+                borderRadius: 38,
+                backgroundColor: "rgba(255,255,255,0.18)",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: 16,
+                borderWidth: 2,
+                borderColor: "rgba(255,255,255,0.3)",
+              }}
+            >
+              <Text style={{ fontSize: 36 }}>🐾</Text>
             </View>
+            <Text
+              style={{
+                color: "#FFFFFF",
+                fontSize: 32,
+                fontFamily: "Nunito_700Bold",
+                letterSpacing: -0.5,
+                marginBottom: 4,
+              }}
+            >
+              PawDoc
+            </Text>
+            <Text
+              style={{
+                color: "rgba(255,255,255,0.75)",
+                fontSize: 14,
+                fontFamily: "Inter_400Regular",
+              }}
+            >
+              Your pet's AI doctor
+            </Text>
+          </LinearGradient>
 
+          {/* ── White bottom sheet (60%) ── */}
+          <View
+            style={{
+              backgroundColor: "#FFFFFF",
+              borderTopLeftRadius: 32,
+              borderTopRightRadius: 32,
+              marginTop: -28,
+              paddingHorizontal: 28,
+              paddingTop: 32,
+              paddingBottom: 40,
+              flex: 1,
+              shadowColor: "#1B4332",
+              shadowOffset: { width: 0, height: -4 },
+              shadowOpacity: 0.08,
+              shadowRadius: 20,
+              elevation: 8,
+            }}
+          >
             {/* Mode toggle */}
-            <View className="flex-row bg-surface border border-border rounded-xl mb-6 p-1">
+            <View
+              style={{
+                flexDirection: "row",
+                backgroundColor: "#F0F4F2",
+                borderRadius: 14,
+                marginBottom: 24,
+                padding: 4,
+              }}
+            >
               <TouchableOpacity
-                className={`flex-1 py-2 rounded-lg items-center ${mode === "signin" ? "bg-primary" : ""}`}
+                style={{
+                  flex: 1,
+                  paddingVertical: 10,
+                  borderRadius: 11,
+                  alignItems: "center",
+                  backgroundColor: mode === "signin" ? "#1B4332" : "transparent",
+                  shadowColor: mode === "signin" ? "#1B4332" : "transparent",
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.2,
+                  shadowRadius: 6,
+                  elevation: mode === "signin" ? 3 : 0,
+                }}
                 onPress={() => switchMode("signin")}
                 accessibilityLabel="Sign in tab"
                 accessibilityRole="tab"
                 accessibilityState={{ selected: mode === "signin" }}
               >
                 <Text
-                  className={`text-sm ${mode === "signin" ? "text-white" : "text-text-secondary"}`}
-                  style={{ fontFamily: "Inter_600SemiBold" }}
+                  style={{
+                    fontSize: 14,
+                    color: mode === "signin" ? "#FFFFFF" : "#52796F",
+                    fontFamily: "Inter_600SemiBold",
+                  }}
                 >
                   Sign in
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                className={`flex-1 py-2 rounded-lg items-center ${mode === "signup" ? "bg-primary" : ""}`}
+                style={{
+                  flex: 1,
+                  paddingVertical: 10,
+                  borderRadius: 11,
+                  alignItems: "center",
+                  backgroundColor: mode === "signup" ? "#1B4332" : "transparent",
+                  shadowColor: mode === "signup" ? "#1B4332" : "transparent",
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.2,
+                  shadowRadius: 6,
+                  elevation: mode === "signup" ? 3 : 0,
+                }}
                 onPress={() => switchMode("signup")}
                 accessibilityLabel="Create account tab"
                 accessibilityRole="tab"
                 accessibilityState={{ selected: mode === "signup" }}
               >
                 <Text
-                  className={`text-sm ${mode === "signup" ? "text-white" : "text-text-secondary"}`}
-                  style={{ fontFamily: "Inter_600SemiBold" }}
+                  style={{
+                    fontSize: 14,
+                    color: mode === "signup" ? "#FFFFFF" : "#52796F",
+                    fontFamily: "Inter_600SemiBold",
+                  }}
                 >
                   Create account
                 </Text>
@@ -241,8 +337,24 @@ export default function LoginScreen() {
 
             {/* General error */}
             {generalError && (
-              <View className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 mb-4">
-                <Text className="text-red-600 text-sm" style={{ fontFamily: "Inter_400Regular" }}>
+              <View
+                style={{
+                  backgroundColor: "#FEF2F2",
+                  borderWidth: 1,
+                  borderColor: "#FECACA",
+                  borderRadius: 12,
+                  paddingHorizontal: 16,
+                  paddingVertical: 12,
+                  marginBottom: 16,
+                }}
+              >
+                <Text
+                  style={{
+                    color: "#DC2626",
+                    fontSize: 13,
+                    fontFamily: "Inter_400Regular",
+                  }}
+                >
                   {generalError}
                 </Text>
               </View>
@@ -250,28 +362,60 @@ export default function LoginScreen() {
 
             {/* Forgot password confirmation */}
             {forgotPasswordSent && (
-              <View className="bg-green-50 border border-green-200 rounded-xl px-4 py-3 mb-4">
-                <Text className="text-green-700 text-sm" style={{ fontFamily: "Inter_400Regular" }}>
+              <View
+                style={{
+                  backgroundColor: "#F0FDF4",
+                  borderWidth: 1,
+                  borderColor: "#BBF7D0",
+                  borderRadius: 12,
+                  paddingHorizontal: 16,
+                  paddingVertical: 12,
+                  marginBottom: 16,
+                }}
+              >
+                <Text
+                  style={{
+                    color: "#059669",
+                    fontSize: 13,
+                    fontFamily: "Inter_400Regular",
+                  }}
+                >
                   Password reset link sent to {email}. Check your email.
                 </Text>
               </View>
             )}
 
             {/* Email */}
-            <View className="mb-4">
+            <View style={{ marginBottom: 16 }}>
               <Text
-                className="text-sm text-text-secondary mb-2"
-                style={{ fontFamily: "Inter_500Medium" }}
+                style={{
+                  fontSize: 13,
+                  color: "#52796F",
+                  marginBottom: 8,
+                  fontFamily: "Inter_500Medium",
+                }}
               >
                 Email address
               </Text>
               <TextInput
-                className={`bg-surface border rounded-xl px-4 py-3 text-base text-text-primary ${emailError ? "border-red-400" : "border-border"}`}
-                style={{ fontFamily: "Inter_400Regular" }}
+                style={{
+                  backgroundColor: emailError ? "#FEF2F2" : "#F7F8F6",
+                  borderWidth: 1,
+                  borderColor: emailError ? "#FECACA" : "#E2EBE6",
+                  borderRadius: 14,
+                  paddingHorizontal: 16,
+                  paddingVertical: 14,
+                  fontSize: 15,
+                  color: "#0F1F17",
+                  fontFamily: "Inter_400Regular",
+                }}
                 placeholder="you@example.com"
-                placeholderTextColor={Colors.textSecondary}
+                placeholderTextColor={Colors.textMuted}
                 value={email}
-                onChangeText={(t) => { setEmail(t); setEmailError(null); }}
+                onChangeText={(t) => {
+                  setEmail(t);
+                  setEmailError(null);
+                }}
                 keyboardType="email-address"
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -280,8 +424,13 @@ export default function LoginScreen() {
               />
               {emailError && (
                 <Text
-                  className="text-red-500 text-xs mt-1 ml-1"
-                  style={{ fontFamily: "Inter_400Regular" }}
+                  style={{
+                    color: "#DC2626",
+                    fontSize: 12,
+                    marginTop: 4,
+                    marginLeft: 4,
+                    fontFamily: "Inter_400Regular",
+                  }}
                 >
                   {emailError}
                 </Text>
@@ -289,21 +438,43 @@ export default function LoginScreen() {
             </View>
 
             {/* Password */}
-            <View className="mb-2">
+            <View style={{ marginBottom: 8 }}>
               <Text
-                className="text-sm text-text-secondary mb-2"
-                style={{ fontFamily: "Inter_500Medium" }}
+                style={{
+                  fontSize: 13,
+                  color: "#52796F",
+                  marginBottom: 8,
+                  fontFamily: "Inter_500Medium",
+                }}
               >
                 Password
               </Text>
-              <View className={`flex-row bg-surface border rounded-xl items-center ${passwordError ? "border-red-400" : "border-border"}`}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  backgroundColor: passwordError ? "#FEF2F2" : "#F7F8F6",
+                  borderWidth: 1,
+                  borderColor: passwordError ? "#FECACA" : "#E2EBE6",
+                  borderRadius: 14,
+                  alignItems: "center",
+                }}
+              >
                 <TextInput
-                  className="flex-1 px-4 py-3 text-base text-text-primary"
-                  style={{ fontFamily: "Inter_400Regular" }}
+                  style={{
+                    flex: 1,
+                    paddingHorizontal: 16,
+                    paddingVertical: 14,
+                    fontSize: 15,
+                    color: "#0F1F17",
+                    fontFamily: "Inter_400Regular",
+                  }}
                   placeholder={mode === "signup" ? "Min. 8 characters" : "Your password"}
-                  placeholderTextColor={Colors.textSecondary}
+                  placeholderTextColor={Colors.textMuted}
                   value={password}
-                  onChangeText={(t) => { setPassword(t); setPasswordError(null); }}
+                  onChangeText={(t) => {
+                    setPassword(t);
+                    setPasswordError(null);
+                  }}
                   secureTextEntry={!showPassword}
                   autoCapitalize="none"
                   autoCorrect={false}
@@ -311,20 +482,31 @@ export default function LoginScreen() {
                   accessibilityLabel="Password input"
                 />
                 <TouchableOpacity
-                  className="px-4 py-3"
+                  style={{ paddingHorizontal: 16, paddingVertical: 14 }}
                   onPress={() => setShowPassword((v) => !v)}
                   accessibilityLabel={showPassword ? "Hide password" : "Show password"}
                   accessibilityRole="button"
                 >
-                  <Text className="text-text-secondary text-sm" style={{ fontFamily: "Inter_500Medium" }}>
+                  <Text
+                    style={{
+                      color: "#52796F",
+                      fontSize: 13,
+                      fontFamily: "Inter_500Medium",
+                    }}
+                  >
                     {showPassword ? "Hide" : "Show"}
                   </Text>
                 </TouchableOpacity>
               </View>
               {passwordError && (
                 <Text
-                  className="text-red-500 text-xs mt-1 ml-1"
-                  style={{ fontFamily: "Inter_400Regular" }}
+                  style={{
+                    color: "#DC2626",
+                    fontSize: 12,
+                    marginTop: 4,
+                    marginLeft: 4,
+                    fontFamily: "Inter_400Regular",
+                  }}
                 >
                   {passwordError}
                 </Text>
@@ -334,23 +516,40 @@ export default function LoginScreen() {
             {/* Forgot password (sign in mode only) */}
             {mode === "signin" && (
               <TouchableOpacity
-                className="self-end mb-6"
+                style={{ alignSelf: "flex-end", marginBottom: 24 }}
                 onPress={handleForgotPassword}
                 disabled={loading}
                 accessibilityLabel="Forgot password"
                 accessibilityRole="button"
               >
-                <Text className="text-primary text-sm" style={{ fontFamily: "Inter_500Medium" }}>
+                <Text
+                  style={{
+                    color: "#1B4332",
+                    fontSize: 13,
+                    fontFamily: "Inter_500Medium",
+                  }}
+                >
                   Forgot password?
                 </Text>
               </TouchableOpacity>
             )}
 
-            {mode === "signup" && <View className="mb-6" />}
+            {mode === "signup" && <View style={{ marginBottom: 24 }} />}
 
             {/* Primary CTA */}
             <TouchableOpacity
-              className="bg-primary rounded-xl py-4 items-center mb-4"
+              style={{
+                backgroundColor: loading ? "#52B788" : "#1B4332",
+                borderRadius: 16,
+                paddingVertical: 16,
+                alignItems: "center",
+                marginBottom: 16,
+                shadowColor: "#1B4332",
+                shadowOffset: { width: 0, height: 6 },
+                shadowOpacity: 0.25,
+                shadowRadius: 14,
+                elevation: 6,
+              }}
               onPress={handleSubmit}
               disabled={loading}
               accessibilityLabel={mode === "signin" ? "Sign in" : "Create account"}
@@ -360,8 +559,12 @@ export default function LoginScreen() {
                 <ActivityIndicator color="#FFFFFF" />
               ) : (
                 <Text
-                  className="text-white text-base"
-                  style={{ fontFamily: "Inter_600SemiBold" }}
+                  style={{
+                    color: "#FFFFFF",
+                    fontSize: 16,
+                    fontFamily: "Inter_600SemiBold",
+                    letterSpacing: -0.1,
+                  }}
                 >
                   {mode === "signin" ? "Sign in" : "Create account"}
                 </Text>
@@ -369,29 +572,52 @@ export default function LoginScreen() {
             </TouchableOpacity>
 
             {/* Divider */}
-            <View className="flex-row items-center mb-4">
-              <View className="flex-1 h-px bg-border" />
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginBottom: 16,
+              }}
+            >
+              <View style={{ flex: 1, height: 1, backgroundColor: "#E2EBE6" }} />
               <Text
-                className="mx-4 text-text-secondary text-sm"
-                style={{ fontFamily: "Inter_400Regular" }}
+                style={{
+                  marginHorizontal: 16,
+                  color: "#95A89F",
+                  fontSize: 13,
+                  fontFamily: "Inter_400Regular",
+                }}
               >
                 or
               </Text>
-              <View className="flex-1 h-px bg-border" />
+              <View style={{ flex: 1, height: 1, backgroundColor: "#E2EBE6" }} />
             </View>
 
             {/* Google OAuth */}
             <TouchableOpacity
-              className="border border-border bg-surface rounded-xl py-4 items-center flex-row justify-center gap-3"
+              style={{
+                borderWidth: 1,
+                borderColor: "#E2EBE6",
+                backgroundColor: "#FFFFFF",
+                borderRadius: 16,
+                paddingVertical: 14,
+                alignItems: "center",
+                flexDirection: "row",
+                justifyContent: "center",
+                gap: 10,
+              }}
               onPress={handleGoogleOAuth}
               disabled={loading}
               accessibilityLabel="Continue with Google"
               accessibilityRole="button"
             >
-              <Text className="text-xl">G</Text>
+              <Text style={{ fontSize: 20 }}>G</Text>
               <Text
-                className="text-text-primary text-base"
-                style={{ fontFamily: "Inter_600SemiBold" }}
+                style={{
+                  color: "#0F1F17",
+                  fontSize: 15,
+                  fontFamily: "Inter_600SemiBold",
+                }}
               >
                 Continue with Google
               </Text>
@@ -399,8 +625,14 @@ export default function LoginScreen() {
 
             {/* Disclaimer */}
             <Text
-              className="text-xs text-text-secondary text-center mt-8"
-              style={{ fontFamily: "Inter_400Regular" }}
+              style={{
+                color: "#95A89F",
+                fontSize: 11,
+                textAlign: "center",
+                marginTop: 24,
+                fontFamily: "Inter_400Regular",
+                lineHeight: 16,
+              }}
             >
               By continuing, you agree to our Terms of Service and Privacy
               Policy. PawDoc is not a substitute for professional veterinary
@@ -409,6 +641,6 @@ export default function LoginScreen() {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 }

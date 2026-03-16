@@ -22,6 +22,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LinearGradient } from "expo-linear-gradient";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -225,9 +226,9 @@ function DetailView({
   }, [scenario.affiliate_cta.url]);
 
   return (
-    <SafeAreaView className="flex-1 bg-background">
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <View className="px-6 pt-4 pb-8">
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#F7F8F6" }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 120 }}>
+        <View style={{ paddingHorizontal: 24, paddingTop: 16, paddingBottom: 32 }}>
           {/* Back button */}
           <TouchableOpacity
             className="flex-row items-center mb-4"
@@ -460,24 +461,43 @@ export default function EmergencyScreen() {
 
   // List view
   return (
-    <SafeAreaView className="flex-1 bg-background">
-      <View className="flex-1 px-6 pt-6">
-        {/* Header */}
-        <View className="mb-4">
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#F7F8F6" }} edges={["top"]}>
+      {/* Red gradient header for emergency urgency */}
+      <LinearGradient
+        colors={["#7F1D1D", "#DC2626"]}
+        style={{
+          paddingHorizontal: 20,
+          paddingTop: 20,
+          paddingBottom: 20,
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
+        <Text style={{ fontSize: 22, marginRight: 10 }}>⚠️</Text>
+        <View>
           <Text
-            className="text-2xl text-text-primary mb-1"
-            style={{ fontFamily: "Nunito_700Bold" }}
+            style={{
+              color: "#FFFFFF",
+              fontSize: 22,
+              fontFamily: "Nunito_700Bold",
+              letterSpacing: -0.3,
+            }}
           >
-            ⚠️ Emergency Guide
+            Emergency Guide
           </Text>
           <Text
-            className="text-sm text-text-secondary"
-            style={{ fontFamily: "Inter_400Regular" }}
+            style={{
+              color: "rgba(255,255,255,0.75)",
+              fontSize: 12,
+              fontFamily: "Inter_400Regular",
+            }}
           >
             Offline first aid for critical pet emergencies
           </Text>
         </View>
+      </LinearGradient>
 
+      <View style={{ flex: 1, paddingHorizontal: 20, paddingTop: 16 }}>
         {/* Emergency vet finder */}
         <EmergencyBanner />
 
@@ -486,8 +506,12 @@ export default function EmergencyScreen() {
 
         {/* Scenario count */}
         <Text
-          className="text-xs text-text-secondary mb-3"
-          style={{ fontFamily: "Inter_400Regular" }}
+          style={{
+            color: "#52796F",
+            fontSize: 12,
+            fontFamily: "Inter_400Regular",
+            marginBottom: 12,
+          }}
         >
           {filtered.length} scenario{filtered.length !== 1 ? "s" : ""}
           {search.trim() ? " found" : " available"}
@@ -501,13 +525,17 @@ export default function EmergencyScreen() {
             <ScenarioCard item={item} onPress={() => setSelected(item)} />
           )}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 24 }}
+          contentContainerStyle={{ paddingBottom: 120 }}
           ListEmptyComponent={
-            <View className="items-center py-12">
-              <Text className="text-4xl mb-4">🔍</Text>
+            <View style={{ alignItems: "center", paddingVertical: 48 }}>
+              <Text style={{ fontSize: 40, marginBottom: 16 }}>🔍</Text>
               <Text
-                className="text-text-secondary text-sm text-center"
-                style={{ fontFamily: "Inter_400Regular" }}
+                style={{
+                  color: "#52796F",
+                  fontSize: 14,
+                  textAlign: "center",
+                  fontFamily: "Inter_400Regular",
+                }}
               >
                 {`No scenarios match \u201c${search}\u201d`}
               </Text>

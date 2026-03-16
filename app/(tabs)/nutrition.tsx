@@ -30,6 +30,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
 import { supabase } from "@/lib/supabase";
 
 // ---------------------------------------------------------------------------
@@ -632,42 +633,64 @@ export default function NutritionScreen() {
 
   if (loading) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#FAFAFA" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#F7F8F6" }} edges={["top"]}>
+        <LinearGradient
+          colors={["#1B4332", "#2D6A4F"]}
+          style={{
+            paddingHorizontal: 20,
+            paddingTop: 20,
+            paddingBottom: 20,
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ fontSize: 22, marginRight: 10 }}>🥗</Text>
+          <View>
+            <Text style={{ color: "#FFFFFF", fontSize: 22, fontFamily: "Nunito_700Bold" }}>
+              Nutrition Advisor
+            </Text>
+            <Text style={{ color: "rgba(255,255,255,0.7)", fontSize: 12, fontFamily: "Inter_400Regular" }}>
+              AI-powered dietary guidance
+            </Text>
+          </View>
+        </LinearGradient>
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-          <ActivityIndicator size="large" color="#2D6A4F" />
+          <ActivityIndicator size="large" color="#1B4332" />
         </View>
       </SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#FAFAFA" }}>
-      {/* Header */}
-      <View
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#F7F8F6" }} edges={["top"]}>
+      {/* Gradient Header */}
+      <LinearGradient
+        colors={["#1B4332", "#2D6A4F"]}
         style={{
-          backgroundColor: "#2D6A4F",
-          paddingHorizontal: 16,
-          paddingVertical: 14,
+          paddingHorizontal: 20,
+          paddingTop: 20,
+          paddingBottom: 20,
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
         }}
       >
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Text style={{ fontSize: 22, marginRight: 8 }}>🥗</Text>
+          <Text style={{ fontSize: 22, marginRight: 10 }}>🥗</Text>
           <View>
             <Text
               style={{
                 color: "#FFFFFF",
-                fontSize: 18,
+                fontSize: 22,
                 fontFamily: "Nunito_700Bold",
+                letterSpacing: -0.3,
               }}
             >
               Nutrition Advisor
             </Text>
             <Text
               style={{
-                color: "#B7E4C7",
+                color: "rgba(255,255,255,0.7)",
                 fontSize: 12,
                 fontFamily: "Inter_400Regular",
               }}
@@ -676,7 +699,7 @@ export default function NutritionScreen() {
             </Text>
           </View>
         </View>
-      </View>
+      </LinearGradient>
 
       {/* Pet selector tabs (if multiple pets) */}
       {pets.length > 1 && (
@@ -684,9 +707,9 @@ export default function NutritionScreen() {
           horizontal
           showsHorizontalScrollIndicator={false}
           style={{
-            backgroundColor: "#FFFFFF",
+            backgroundColor: "#F7F8F6",
             borderBottomWidth: 1,
-            borderBottomColor: "#E5E7EB",
+            borderBottomColor: "#E2EBE6",
             flexGrow: 0,
           }}
           contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 8 }}
@@ -703,7 +726,7 @@ export default function NutritionScreen() {
                 borderRadius: 999,
                 marginRight: 8,
                 backgroundColor:
-                  p.id === activePetId ? "#2D6A4F" : "#F3F4F6",
+                  p.id === activePetId ? "#1B4332" : "#F0F4F2",
               }}
               accessibilityLabel={`View ${p.name}'s nutrition`}
               accessibilityRole="button"
@@ -799,7 +822,7 @@ export default function NutritionScreen() {
             onPress={handleGenerate}
             disabled={generating}
             style={{
-              backgroundColor: generating ? "#B7E4C7" : "#2D6A4F",
+              backgroundColor: generating ? "#52B788" : "#1B4332",
               borderRadius: 12,
               paddingHorizontal: 28,
               paddingVertical: 14,
@@ -993,7 +1016,7 @@ export default function NutritionScreen() {
               paddingVertical: 14,
               alignItems: "center",
               borderWidth: 1.5,
-              borderColor: generating ? "#B7E4C7" : "#2D6A4F",
+              borderColor: generating ? "#95A89F" : "#1B4332",
               marginTop: 8,
               marginBottom: 8,
               flexDirection: "row",
@@ -1005,7 +1028,7 @@ export default function NutritionScreen() {
             {generating ? (
               <ActivityIndicator
                 size="small"
-                color="#2D6A4F"
+                color="#1B4332"
                 style={{ marginRight: 8 }}
               />
             ) : (

@@ -22,6 +22,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter, useFocusEffect } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
 import { supabase } from "@/lib/supabase";
 
 // ---------------------------------------------------------------------------
@@ -112,6 +113,17 @@ function recurrenceLabel(r: Reminder): string {
 // Reminder card
 // ---------------------------------------------------------------------------
 
+function statusBorderColor(reminder: Reminder): string {
+  if (!reminder.is_active) return "#E2EBE6";
+  const due = new Date(reminder.due_date);
+  const now = new Date();
+  const diffDays = Math.ceil(
+    (due.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
+  );
+  if (diffDays < 0) return "#DC2626";
+  return "#059669";
+}
+
 function ReminderCard({
   reminder,
   onToggle,
@@ -127,11 +139,27 @@ function ReminderCard({
   const emoji = TYPE_EMOJI[reminder.type] ?? "🔔";
   const dueColor = reminder.is_active
     ? dueDateColor(reminder.due_date)
-    : "#9CA3AF";
+    : "#95A89F";
+  const leftBorder = statusBorderColor(reminder);
 
   return (
     <TouchableOpacity
-      className="bg-surface border border-border rounded-2xl p-4 mb-3 flex-row items-center"
+      style={{
+        backgroundColor: "#FFFFFF",
+        borderRadius: 16,
+        padding: 14,
+        marginBottom: 10,
+        flexDirection: "row",
+        alignItems: "center",
+        borderLeftWidth: 4,
+        borderLeftColor: leftBorder,
+        opacity: reminder.is_active ? 1 : 0.6,
+        shadowColor: "#1B4332",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.07,
+        shadowRadius: 10,
+        elevation: 2,
+      }}
       onPress={() => onEdit(reminder)}
       onLongPress={() =>
         Alert.alert(
@@ -149,38 +177,63 @@ function ReminderCard({
       }
       accessibilityLabel={`Reminder: ${reminder.title ?? label}`}
       accessibilityRole="button"
-      style={{ opacity: reminder.is_active ? 1 : 0.55 }}
     >
-      {/* Icon */}
-      <View className="w-12 h-12 bg-primary/10 rounded-xl items-center justify-center mr-3">
-        <Text style={{ fontSize: 22 }}>{emoji}</Text>
+      {/* Icon badge */}
+      <View
+        style={{
+          width: 44,
+          height: 44,
+          borderRadius: 14,
+          backgroundColor: "#D8F3DC",
+          alignItems: "center",
+          justifyContent: "center",
+          marginRight: 12,
+        }}
+      >
+        <Text style={{ fontSize: 20 }}>{emoji}</Text>
       </View>
 
       {/* Info */}
-      <View className="flex-1">
+      <View style={{ flex: 1 }}>
         <Text
-          className="text-text-primary text-sm mb-0.5"
-          style={{ fontFamily: "Nunito_700Bold" }}
+          style={{
+            color: "#0F1F17",
+            fontSize: 14,
+            fontFamily: "Nunito_700Bold",
+            marginBottom: 2,
+            letterSpacing: -0.1,
+          }}
           numberOfLines={1}
         >
           {reminder.title ?? label}
         </Text>
         <Text
-          className="text-xs mb-1"
-          style={{ color: dueColor, fontFamily: "Inter_600SemiBold" }}
+          style={{
+            fontSize: 12,
+            color: dueColor,
+            fontFamily: "Inter_600SemiBold",
+            marginBottom: 2,
+          }}
         >
           {formatDueDate(reminder.due_date)}
         </Text>
         <Text
-          className="text-text-secondary text-xs"
-          style={{ fontFamily: "Inter_400Regular" }}
+          style={{
+            color: "#52796F",
+            fontSize: 11,
+            fontFamily: "Inter_400Regular",
+          }}
         >
           {label} · {recurrenceLabel(reminder)}
         </Text>
         {reminder.affiliate_cta ? (
           <Text
-            className="text-xs mt-1"
-            style={{ color: "#F4A261", fontFamily: "Inter_500Medium" }}
+            style={{
+              color: "#F4A261",
+              fontSize: 11,
+              fontFamily: "Inter_500Medium",
+              marginTop: 2,
+            }}
             numberOfLines={1}
           >
             Refill: {reminder.affiliate_cta}
@@ -188,12 +241,15 @@ function ReminderCard({
         ) : null}
       </View>
 
-      {/* Active toggle */}
+      {/* Active toggle pill */}
       <TouchableOpacity
         onPress={() => onToggle(reminder)}
-        className="ml-3 px-3 py-1.5 rounded-full"
         style={{
-          backgroundColor: reminder.is_active ? "#D1FAE5" : "#F3F4F6",
+          marginLeft: 10,
+          paddingHorizontal: 12,
+          paddingVertical: 6,
+          borderRadius: 999,
+          backgroundColor: reminder.is_active ? "#D8F3DC" : "#F0F4F2",
         }}
         accessibilityLabel={
           reminder.is_active ? "Deactivate reminder" : "Activate reminder"
@@ -201,9 +257,9 @@ function ReminderCard({
         accessibilityRole="switch"
       >
         <Text
-          className="text-xs"
           style={{
-            color: reminder.is_active ? "#065F46" : "#6B7280",
+            fontSize: 11,
+            color: reminder.is_active ? "#1B4332" : "#95A89F",
             fontFamily: "Inter_600SemiBold",
           }}
         >
@@ -367,40 +423,71 @@ export default function RemindersScreen() {
   const totalCount = sections.reduce((acc, s) => acc + s.data.length, 0);
 
   return (
-    <SafeAreaView className="flex-1 bg-background">
-      <View className="flex-1 px-5 pt-6">
-        {/* Header */}
-        <View className="mb-5">
-          <Text
-            className="text-2xl text-primary"
-            style={{ fontFamily: "Nunito_700Bold" }}
-          >
-            Reminders
-          </Text>
-          <Text
-            className="text-xs text-text-secondary mt-0.5"
-            style={{ fontFamily: "Inter_400Regular" }}
-          >
-            {totalCount} reminder{totalCount !== 1 ? "s" : ""} for your pets
-          </Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#F7F8F6" }} edges={["top"]}>
+      {/* Gradient Header */}
+      <LinearGradient
+        colors={["#1B4332", "#2D6A4F"]}
+        style={{
+          paddingHorizontal: 20,
+          paddingTop: 20,
+          paddingBottom: 20,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Text style={{ fontSize: 22, marginRight: 10 }}>🔔</Text>
+          <View>
+            <Text
+              style={{
+                color: "#FFFFFF",
+                fontSize: 22,
+                fontFamily: "Nunito_700Bold",
+                letterSpacing: -0.3,
+              }}
+            >
+              Reminders
+            </Text>
+            <Text
+              style={{
+                color: "rgba(255,255,255,0.7)",
+                fontSize: 12,
+                fontFamily: "Inter_400Regular",
+              }}
+            >
+              {totalCount} reminder{totalCount !== 1 ? "s" : ""} for your pets
+            </Text>
+          </View>
         </View>
+      </LinearGradient>
 
+      <View style={{ flex: 1, paddingHorizontal: 20, paddingTop: 16 }}>
         {/* Filter chips */}
         <FlatList
           data={FILTER_OPTIONS}
           keyExtractor={(item) => item.key}
           horizontal
           showsHorizontalScrollIndicator={false}
-          style={{ flexGrow: 0, marginBottom: 16 }}
+          style={{ flexGrow: 0, marginBottom: 14 }}
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => setFilter(item.key)}
-              className="rounded-full px-4 py-1.5 mr-2 border"
               style={{
+                borderRadius: 999,
+                paddingHorizontal: 16,
+                paddingVertical: 7,
+                marginRight: 8,
                 backgroundColor:
-                  filter === item.key ? "#2D6A4F" : "#FFFFFF",
+                  filter === item.key ? "#1B4332" : "#FFFFFF",
+                borderWidth: 1,
                 borderColor:
-                  filter === item.key ? "#2D6A4F" : "#E5E7EB",
+                  filter === item.key ? "#1B4332" : "#E2EBE6",
+                shadowColor: "#1B4332",
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: filter === item.key ? 0.15 : 0.04,
+                shadowRadius: 4,
+                elevation: filter === item.key ? 2 : 1,
               }}
               accessibilityLabel={`Filter by ${item.label}`}
               accessibilityRole="button"
@@ -408,7 +495,7 @@ export default function RemindersScreen() {
               <Text
                 style={{
                   fontSize: 13,
-                  color: filter === item.key ? "#FFFFFF" : "#6B7280",
+                  color: filter === item.key ? "#FFFFFF" : "#52796F",
                   fontFamily:
                     filter === item.key
                       ? "Inter_600SemiBold"
@@ -423,35 +510,67 @@ export default function RemindersScreen() {
 
         {/* Content */}
         {loading ? (
-          <View className="flex-1 items-center justify-center">
-            <ActivityIndicator size="large" color="#2D6A4F" />
+          <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+            <ActivityIndicator size="large" color="#1B4332" />
           </View>
         ) : filteredSections.length === 0 ? (
-          <View className="flex-1 bg-surface border border-border rounded-2xl items-center justify-center p-8">
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: "#FFFFFF",
+              borderRadius: 24,
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 32,
+              shadowColor: "#1B4332",
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.06,
+              shadowRadius: 16,
+              elevation: 2,
+            }}
+          >
             <Text style={{ fontSize: 48, marginBottom: 12 }}>🔔</Text>
             <Text
-              className="text-lg text-text-primary text-center mb-2"
-              style={{ fontFamily: "Nunito_700Bold" }}
+              style={{
+                fontSize: 18,
+                color: "#0F1F17",
+                textAlign: "center",
+                marginBottom: 8,
+                fontFamily: "Nunito_700Bold",
+              }}
             >
               No reminders yet
             </Text>
             <Text
-              className="text-sm text-text-secondary text-center mb-6"
-              style={{ fontFamily: "Inter_400Regular" }}
+              style={{
+                fontSize: 14,
+                color: "#52796F",
+                textAlign: "center",
+                marginBottom: 24,
+                lineHeight: 20,
+                fontFamily: "Inter_400Regular",
+              }}
             >
               Set reminders for vaccinations, flea treatments, medications, and
-              annual checkups. We'll send push notifications so you never miss
-              anything.
+              annual checkups.
             </Text>
             <TouchableOpacity
-              className="bg-accent rounded-xl px-6 py-3"
+              style={{
+                backgroundColor: "#F4A261",
+                borderRadius: 14,
+                paddingHorizontal: 24,
+                paddingVertical: 13,
+              }}
               onPress={handleAdd}
               accessibilityLabel="Set your first reminder"
               accessibilityRole="button"
             >
               <Text
-                className="text-white text-sm"
-                style={{ fontFamily: "Inter_600SemiBold" }}
+                style={{
+                  color: "#FFFFFF",
+                  fontSize: 14,
+                  fontFamily: "Inter_600SemiBold",
+                }}
               >
                 Set Your First Reminder
               </Text>
@@ -469,12 +588,17 @@ export default function RemindersScreen() {
                   setRefreshing(true);
                   fetchReminders();
                 }}
-                tintColor="#2D6A4F"
+                tintColor="#1B4332"
               />
             }
             renderSectionHeader={({ section }) => (
               <View
-                className="flex-row items-center mb-2 mt-3"
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginBottom: 8,
+                  marginTop: 16,
+                }}
               >
                 <Text style={{ fontSize: 18, marginRight: 6 }}>
                   {SPECIES_EMOJI[
@@ -482,15 +606,29 @@ export default function RemindersScreen() {
                   ] ?? "🐾"}
                 </Text>
                 <Text
-                  className="text-base text-text-primary"
-                  style={{ fontFamily: "Nunito_700Bold" }}
+                  style={{
+                    fontSize: 15,
+                    color: "#0F1F17",
+                    fontFamily: "Nunito_700Bold",
+                  }}
                 >
                   {section.pet_name}
                 </Text>
-                <View className="ml-2 px-2 py-0.5 rounded-full bg-primary/10">
+                <View
+                  style={{
+                    marginLeft: 8,
+                    paddingHorizontal: 8,
+                    paddingVertical: 2,
+                    borderRadius: 999,
+                    backgroundColor: "#D8F3DC",
+                  }}
+                >
                   <Text
-                    className="text-xs text-primary"
-                    style={{ fontFamily: "Inter_600SemiBold" }}
+                    style={{
+                      fontSize: 11,
+                      color: "#1B4332",
+                      fontFamily: "Inter_600SemiBold",
+                    }}
                   >
                     {section.data.length}
                   </Text>
@@ -505,7 +643,7 @@ export default function RemindersScreen() {
                 onEdit={handleEdit}
               />
             )}
-            contentContainerStyle={{ paddingBottom: 100 }}
+            contentContainerStyle={{ paddingBottom: 120 }}
           />
         )}
       </View>
@@ -513,13 +651,21 @@ export default function RemindersScreen() {
       {/* FAB */}
       <TouchableOpacity
         onPress={handleAdd}
-        className="absolute bottom-8 right-6 w-14 h-14 bg-primary rounded-full items-center justify-center"
         style={{
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 4 },
-          shadowOpacity: 0.18,
-          shadowRadius: 6,
-          elevation: 6,
+          position: "absolute",
+          bottom: 104,
+          right: 24,
+          width: 56,
+          height: 56,
+          backgroundColor: "#1B4332",
+          borderRadius: 28,
+          alignItems: "center",
+          justifyContent: "center",
+          shadowColor: "#1B4332",
+          shadowOffset: { width: 0, height: 6 },
+          shadowOpacity: 0.3,
+          shadowRadius: 12,
+          elevation: 8,
         }}
         accessibilityLabel="Add a reminder"
         accessibilityRole="button"
