@@ -141,28 +141,25 @@ export default function PermissionsScreen() {
 
       const userId = pendingPetData.userId || user.id;
 
-      // Upsert pet row with all data from Screens 2 and 3
+      // Insert pet row with all data from Screens 2 and 3
       const { data: petRow, error: petError } = await supabase
         .from("pets")
-        .upsert(
-          {
-            user_id: userId,
-            name: pendingPetData.name,
-            species: pendingPetData.species,
-            breed: pendingPetData.breed,
-            dob: pendingPetData.dob,
-            weight: pendingPetData.weight,
-            allergies: health.allergies.length > 0 ? health.allergies : null,
-            conditions: health.conditions.length > 0 ? health.conditions : null,
-            medications: health.medications.length > 0 ? health.medications : null,
-          },
-          { onConflict: "user_id,name" }
-        )
+        .insert({
+          user_id: userId,
+          name: pendingPetData.name,
+          species: pendingPetData.species,
+          breed: pendingPetData.breed,
+          dob: pendingPetData.dob,
+          weight: pendingPetData.weight,
+          allergies: health.allergies.length > 0 ? health.allergies : null,
+          conditions: health.conditions.length > 0 ? health.conditions : null,
+          medications: health.medications.length > 0 ? health.medications : null,
+        })
         .select()
         .single();
 
       if (petError) {
-        console.warn("Pet upsert error:", petError.message);
+        throw new Error(petError.message);
       }
 
       // Asynchronously trigger nutrition report generation — do not await
