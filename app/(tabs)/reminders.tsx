@@ -274,10 +274,10 @@ function ReminderCard({
 // Filter chip options
 // ---------------------------------------------------------------------------
 
-const FILTER_OPTIONS: Array<{
+const FILTER_OPTIONS: {
   key: "all" | Reminder["type"];
   label: string;
-}> = [
+}[] = [
   { key: "all", label: "All" },
   { key: "vaccination", label: "Vaccines" },
   { key: "prevention", label: "Flea/Tick" },

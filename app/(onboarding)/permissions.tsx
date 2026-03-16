@@ -185,7 +185,7 @@ export default function PermissionsScreen() {
 
       // Navigate immediately — nutrition report generates in background
       router.replace("/(tabs)/home");
-    } catch (err) {
+    } catch {
       Alert.alert("Something went wrong", "Please try again.");
     } finally {
       setLoading(false);

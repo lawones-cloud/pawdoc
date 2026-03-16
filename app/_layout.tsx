@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { Session } from "@supabase/supabase-js";
 import { PostHogProvider } from "posthog-react-native";
 import * as SplashScreen from "expo-splash-screen";
 import {
@@ -24,7 +23,6 @@ import { posthog } from "@/lib/posthog";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [session, setSession] = useState<Session | null>(null);
   const [authLoaded, setAuthLoaded] = useState(false);
 
   const [fontsLoaded] = useFonts({
@@ -36,15 +34,14 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
+    supabase.auth.getSession().then(() => {
       setAuthLoaded(true);
     });
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
+    } = supabase.auth.onAuthStateChange(() => {
+      // Auth state changes handled by useAuthSession in index.tsx
     });
 
     return () => subscription.unsubscribe();
@@ -71,6 +68,7 @@ export default function RootLayout() {
         <Stack.Screen name="pet-form" />
         <Stack.Screen name="pet-detail" />
         <Stack.Screen name="reminder-form" />
+        <Stack.Screen name="settings" />
         <Stack.Screen name="auth/callback" />
       </Stack>
       <StatusBar style="dark" backgroundColor="#FAFAFA" />

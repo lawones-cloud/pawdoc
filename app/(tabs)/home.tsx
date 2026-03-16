@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -171,6 +171,26 @@ export default function HomeScreen() {
             borderBottomRightRadius: 32,
           }}
         >
+          {/* Settings gear — top right */}
+          <TouchableOpacity
+            onPress={() => router.push("/settings")}
+            style={{
+              position: "absolute",
+              top: 18,
+              right: 20,
+              width: 36,
+              height: 36,
+              borderRadius: 18,
+              backgroundColor: "rgba(255,255,255,0.15)",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            accessibilityLabel="Open settings"
+            accessibilityRole="button"
+          >
+            <Text style={{ fontSize: 18 }}>⚙️</Text>
+          </TouchableOpacity>
+
           <Text
             style={{
               color: "rgba(255,255,255,0.65)",

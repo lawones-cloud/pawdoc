@@ -39,7 +39,7 @@ export default function AuthCallback() {
         // and redirect to onboarding if the user has no pet yet.
         router.replace("/");
       });
-  }, [code]);
+  }, [code, router]);
 
   if (error) {
     return (

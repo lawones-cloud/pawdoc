@@ -36,18 +36,18 @@ interface Pet {
   species: string;
 }
 
-const TYPE_OPTIONS: Array<{ value: ReminderType; label: string; emoji: string }> = [
+const TYPE_OPTIONS: { value: ReminderType; label: string; emoji: string }[] = [
   { value: "vaccination", label: "Vaccination", emoji: "💉" },
   { value: "medication", label: "Medication", emoji: "💊" },
   { value: "checkup", label: "Vet Checkup", emoji: "🩺" },
   { value: "prevention", label: "Flea / Tick / Heartworm", emoji: "🛡️" },
 ];
 
-const RECURRENCE_OPTIONS: Array<{
+const RECURRENCE_OPTIONS: {
   label: string;
   interval: number | null;
   unit: RecurrenceUnit | null;
-}> = [
+}[] = [
   { label: "None (one-time)", interval: null, unit: null },
   { label: "Daily", interval: 1, unit: "days" },
   { label: "Weekly", interval: 1, unit: "weeks" },
