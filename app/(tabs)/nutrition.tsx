@@ -855,7 +855,7 @@ export default function NutritionScreen() {
       ) : (
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
+          contentContainerStyle={{ padding: 16, paddingBottom: 120 }}
           refreshControl={
             <RefreshControl
               refreshing={refreshing}

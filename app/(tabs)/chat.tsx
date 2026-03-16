@@ -1150,12 +1150,12 @@ export default function ChatScreen() {
 
   if (!selectedPetId) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#F7F8F6" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#F7F8F6" }} edges={["top"]}>
         <LinearGradient
           colors={["#1B4332", "#2D6A4F"]}
           style={{
             paddingHorizontal: 20,
-            paddingTop: 56,
+            paddingTop: 20,
             paddingBottom: 20,
             flexDirection: "row",
             alignItems: "center",
@@ -1199,13 +1199,13 @@ export default function ChatScreen() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#F7F8F6" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#F7F8F6" }} edges={["top"]}>
       {/* Header */}
       <LinearGradient
         colors={["#1B4332", "#2D6A4F"]}
         style={{
           paddingHorizontal: 20,
-          paddingTop: 56,
+          paddingTop: 20,
           paddingBottom: 16,
           flexDirection: "row",
           alignItems: "center",
@@ -1307,7 +1307,8 @@ export default function ChatScreen() {
           borderTopWidth: 1,
           borderTopColor: "#E5E7EB",
           paddingHorizontal: 12,
-          paddingVertical: 10,
+          paddingTop: 10,
+          paddingBottom: 100,
           flexDirection: "row",
           alignItems: "flex-end",
         }}
