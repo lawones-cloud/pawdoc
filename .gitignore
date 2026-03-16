@@ -38,3 +38,5 @@ tsconfig.tsbuildinfo
 /dist/
 /build/
 /web-build/
+android/
+play-service-account.json

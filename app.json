@@ -60,6 +60,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "21922428-ed18-4306-b8b7-85e1d4a8c29f"
+      }
+    },
+    "owner": "primethebrain"
   }
 }
