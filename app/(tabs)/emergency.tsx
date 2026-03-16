@@ -509,7 +509,7 @@ export default function EmergencyScreen() {
                 className="text-text-secondary text-sm text-center"
                 style={{ fontFamily: "Inter_400Regular" }}
               >
-                No scenarios match &ldquo;{search}&rdquo;
+                {`No scenarios match \u201c${search}\u201d`}
               </Text>
             </View>
           }

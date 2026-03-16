@@ -118,8 +118,8 @@ export default function LoginScreen() {
 
         router.replace("/");
       }
-    } catch (err: any) {
-      setGeneralError(err.message ?? "Something went wrong. Please try again.");
+    } catch (err: unknown) {
+      setGeneralError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -140,8 +140,8 @@ export default function LoginScreen() {
       );
       if (error) throw error;
       setForgotPasswordSent(true);
-    } catch (err: any) {
-      setGeneralError(err.message ?? "Failed to send reset email.");
+    } catch (err: unknown) {
+      setGeneralError(err instanceof Error ? err.message : "Failed to send reset email.");
     } finally {
       setLoading(false);
     }
@@ -158,8 +158,8 @@ export default function LoginScreen() {
       });
 
       if (error) throw error;
-    } catch (error: any) {
-      Alert.alert("Error", error.message ?? "Google sign-in failed.");
+    } catch (error: unknown) {
+      Alert.alert("Error", error instanceof Error ? error.message : "Google sign-in failed.");
     } finally {
       setLoading(false);
     }

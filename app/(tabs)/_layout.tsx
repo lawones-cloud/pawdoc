@@ -1,11 +1,12 @@
+import { Text } from "react-native";
 import { Tabs } from "expo-router";
 import { Colors } from "@/constants/theme";
 
 function TabIcon({ emoji, focused }: { emoji: string; focused: boolean }) {
   return (
-    <span style={{ fontSize: focused ? 26 : 22, opacity: focused ? 1 : 0.6 }}>
+    <Text style={{ fontSize: focused ? 26 : 22, opacity: focused ? 1 : 0.6 }}>
       {emoji}
-    </span>
+    </Text>
   );
 }
 
