@@ -18,7 +18,8 @@
       "android": {
         "serviceAccountKeyPath": "./play-service-account.json",
         "track": "internal",
-        "applicationId": "com.lawones.pawdoc"
+        "applicationId": "com.lawones.pawdoc",
+        "releaseStatus": "draft"
       }
     }
   }
