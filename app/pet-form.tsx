@@ -134,7 +134,7 @@ function BreedPicker({
         style={{ fontFamily: "Inter_400Regular", borderColor: "#E5E7EB" }}
         value={query}
         onChangeText={(t) => { setQuery(t); onSelect(t); }}
-        placeholder="Enter breed (optional)"
+        placeholder="e.g. Livestock, Rabbit, Bird (optional)"
         placeholderTextColor="#9CA3AF"
       />
     );

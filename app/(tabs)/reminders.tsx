@@ -19,6 +19,7 @@ import {
   Alert,
   RefreshControl,
   SectionList,
+  Linking,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter, useFocusEffect } from "expo-router";
@@ -227,17 +228,25 @@ function ReminderCard({
           {label} · {recurrenceLabel(reminder)}
         </Text>
         {reminder.affiliate_cta ? (
-          <Text
-            style={{
-              color: "#F4A261",
-              fontSize: 11,
-              fontFamily: "Inter_500Medium",
-              marginTop: 2,
-            }}
-            numberOfLines={1}
+          <TouchableOpacity
+            onPress={() => Linking.openURL(reminder.affiliate_cta!)}
+            accessibilityLabel="Open refill link"
+            accessibilityRole="link"
+            hitSlop={{ top: 4, bottom: 4, left: 4, right: 4 }}
           >
-            Refill: {reminder.affiliate_cta}
-          </Text>
+            <Text
+              style={{
+                color: "#F4A261",
+                fontSize: 11,
+                fontFamily: "Inter_500Medium",
+                marginTop: 2,
+                textDecorationLine: "underline",
+              }}
+              numberOfLines={1}
+            >
+              Refill ↗
+            </Text>
+          </TouchableOpacity>
         ) : null}
       </View>
 

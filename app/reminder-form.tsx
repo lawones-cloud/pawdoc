@@ -18,6 +18,7 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
+  Linking,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter, useLocalSearchParams } from "expo-router";
@@ -510,8 +511,8 @@ export default function ReminderFormScreen() {
             getKey={(v) => v}
           />
 
-          {/* Affiliate CTA */}
-          <SectionLabel label="Affiliate / Refill Link" />
+          {/* Refill Link */}
+          <SectionLabel label="Refill Link" />
           <TextInput
             className="bg-surface border border-border rounded-xl px-4 py-3 text-text-primary"
             style={{ fontFamily: "Inter_400Regular", fontSize: 13 }}
@@ -523,8 +524,27 @@ export default function ReminderFormScreen() {
             autoCapitalize="none"
             autoCorrect={false}
             returnKeyType="done"
-            accessibilityLabel="Affiliate CTA URL"
+            accessibilityLabel="Refill link URL"
           />
+          {affiliateCta.startsWith("http") && (
+            <TouchableOpacity
+              onPress={() => Linking.openURL(affiliateCta)}
+              accessibilityLabel="Open refill link"
+              accessibilityRole="link"
+              style={{ marginTop: 6, alignSelf: "flex-start" }}
+            >
+              <Text
+                style={{
+                  fontFamily: "Inter_500Medium",
+                  fontSize: 12,
+                  color: "#2D6A4F",
+                  textDecorationLine: "underline",
+                }}
+              >
+                Open refill link ↗
+              </Text>
+            </TouchableOpacity>
+          )}
           <Text
             className="text-text-secondary text-xs mt-1"
             style={{ fontFamily: "Inter_400Regular" }}
