@@ -11,13 +11,10 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useRouter } from "expo-router";
-import * as Linking from "expo-linking";
 import { LinearGradient } from "expo-linear-gradient";
 import { supabase } from "@/lib/supabase";
 import { Colors } from "@/constants/theme";
 
-// Used for OAuth (Google) redirects only
-const authCallbackUrl = Linking.createURL("auth/callback");
 
 type Mode = "signin" | "signup";
 
@@ -147,23 +144,6 @@ export default function LoginScreen() {
     }
   }
 
-  async function handleGoogleOAuth() {
-    setLoading(true);
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: authCallbackUrl,
-        },
-      });
-
-      if (error) throw error;
-    } catch (error: unknown) {
-      Alert.alert("Error", error instanceof Error ? error.message : "Google sign-in failed.");
-    } finally {
-      setLoading(false);
-    }
-  }
 
   return (
     <View style={{ flex: 1, backgroundColor: "#F7F8F6" }}>
@@ -568,58 +548,6 @@ export default function LoginScreen() {
                   {mode === "signin" ? "Sign in" : "Create account"}
                 </Text>
               )}
-            </TouchableOpacity>
-
-            {/* Divider */}
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginBottom: 16,
-              }}
-            >
-              <View style={{ flex: 1, height: 1, backgroundColor: "#E2EBE6" }} />
-              <Text
-                style={{
-                  marginHorizontal: 16,
-                  color: "#95A89F",
-                  fontSize: 13,
-                  fontFamily: "Inter_400Regular",
-                }}
-              >
-                or
-              </Text>
-              <View style={{ flex: 1, height: 1, backgroundColor: "#E2EBE6" }} />
-            </View>
-
-            {/* Google OAuth */}
-            <TouchableOpacity
-              style={{
-                borderWidth: 1,
-                borderColor: "#E2EBE6",
-                backgroundColor: "#FFFFFF",
-                borderRadius: 16,
-                paddingVertical: 14,
-                alignItems: "center",
-                flexDirection: "row",
-                justifyContent: "center",
-                gap: 10,
-              }}
-              onPress={handleGoogleOAuth}
-              disabled={loading}
-              accessibilityLabel="Continue with Google"
-              accessibilityRole="button"
-            >
-              <Text style={{ fontSize: 20 }}>G</Text>
-              <Text
-                style={{
-                  color: "#0F1F17",
-                  fontSize: 15,
-                  fontFamily: "Inter_600SemiBold",
-                }}
-              >
-                Continue with Google
-              </Text>
             </TouchableOpacity>
 
             {/* Disclaimer */}
