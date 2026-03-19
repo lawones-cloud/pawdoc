@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useRouter } from "expo-router";
+import { Linking } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { supabase } from "@/lib/supabase";
 import { Colors } from "@/constants/theme";
@@ -175,7 +176,7 @@ export default function LoginScreen() {
                 paddingHorizontal: 12,
                 paddingVertical: 8,
               }}
-              onPress={() => router.push("/landing")}
+              onPress={() => Linking.openURL("https://pawdoc.site")}
               accessibilityLabel="Back to home page"
               accessibilityRole="button"
             >
