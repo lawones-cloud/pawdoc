@@ -41,7 +41,7 @@ export default function Index() {
   }
 
   if (!session) {
-    return <Redirect href="/landing" />;
+    return <Redirect href="/(auth)/login" />;
   }
 
   if (!onboardingDone) {
